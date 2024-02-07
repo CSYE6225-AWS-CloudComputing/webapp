@@ -1,0 +1,19 @@
+name: Github Actions Demo
+run-name: test-run
+
+on:
+  pull_request:
+    branches:
+      - 'github-actions'
+
+jobs:
+  test-actions:
+    if: github.event.pull_request.head.repo.fork && github.event.pull_request.base.ref == 'github-actions'
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: test-Run
+      - run: echo "Hello World"
