@@ -12,8 +12,12 @@ public class PostInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if(request.getParameterMap().size()>0 || authorizationHeader != null){
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION );
+        if(request.getMethod().equalsIgnoreCase("OPTIONS") || request.getMethod().equalsIgnoreCase("HEAD")){
+            response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
+            return false;
+        }
+        if(request.getParameterMap().size()>0 || authorizationHeader != null ){
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             return false;
         }
