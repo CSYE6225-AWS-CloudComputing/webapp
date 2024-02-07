@@ -15,6 +15,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
@@ -31,7 +32,7 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws UserDoesNotExistException {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws UserDoesNotExistException, IOException {
 
         if (handler instanceof HandlerMethod) {
             if (request.getMethod().equalsIgnoreCase("GET") || request.getMethod().equalsIgnoreCase("PUT")) {
@@ -52,12 +53,17 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
                         // Check if the user exists and the password matches
                         if (!passwordEncoder.matches(password, user.getPassword())) {
                             response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"message\": \"" +"Password Mismatch"+ "\"}");
+
                             return false;
                         }
                         request.setAttribute("user", user);
                     }
                 } else {
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"message\": \"" +"Authorization Details not provided"+ "\"}");
                     return false;
                 }
             }

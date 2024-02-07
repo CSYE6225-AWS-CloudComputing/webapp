@@ -2,12 +2,14 @@ package com.example.webapp.controller;
 
 import com.example.webapp.DTO.UserDTO;
 import com.example.webapp.DTO.UserUpdateDTO;
+import com.example.webapp.controlleradvice.InvalidCreateRequest;
 import com.example.webapp.controlleradvice.InvalidUserUpdaRequestException;
 import com.example.webapp.controlleradvice.UserDoesNotExistException;
 import com.example.webapp.controlleradvice.UserExistsException;
 import com.example.webapp.model.User;
 import com.example.webapp.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,13 +32,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody UserDTO UserDTO) throws UserExistsException {
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO UserDTO) throws UserExistsException, InvalidCreateRequest {
         User userOutput=userService.createUser(UserDTO);
        return ResponseEntity.ok(userOutput);
     }
 
     @PutMapping("/self")
-    public ResponseEntity<User> updateUser(@RequestBody UserUpdateDTO userRequestBody, HttpServletRequest request) throws UserDoesNotExistException, InvalidUserUpdaRequestException {
+    public ResponseEntity<User> updateUser(@Valid @RequestBody UserUpdateDTO userRequestBody, HttpServletRequest request) throws UserDoesNotExistException, InvalidUserUpdaRequestException {
 
         User userOutput=userService.updateUser(userRequestBody, (User) request.getAttribute("user"));
         return ResponseEntity.ok(userOutput);
