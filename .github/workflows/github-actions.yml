@@ -7,7 +7,7 @@ on:
 jobs:
   Springboot-Setup:
     if: github.event.pull_request.head.repo.fork
-    runs-on: centos-latest
+    runs-on: ubuntu-latest
 
     services:
       postgres:
