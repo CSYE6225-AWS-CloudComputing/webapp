@@ -35,6 +35,10 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws UserDoesNotExistException, IOException {
 
         if (handler instanceof HandlerMethod) {
+            if(request.getMethod().equalsIgnoreCase("OPTIONS") || request.getMethod().equalsIgnoreCase("HEAD")){
+                response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
+                return false;
+            }
             if(request.getParameterMap().size()>0){
                 response.setStatus(HttpStatus.BAD_REQUEST.value());
                 return false;
