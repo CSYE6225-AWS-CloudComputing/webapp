@@ -1,5 +1,6 @@
 package com.example.webapp.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -11,10 +12,12 @@ import lombok.*;
 @AllArgsConstructor
 public class UserDTO {
 
+    @JsonProperty("first_name")
     @Size(min = 2, max = 30, message = "Size must be between 2 and 30")
     @Pattern(regexp = "^[a-zA-Z]+$", message = "Must only contain letters")
     private String firstName;
 
+    @JsonProperty("last_name")
     @Size(min = 2, max = 30, message = "Size must be between 2 and 30")
     @Pattern(regexp = "^[a-zA-Z]+$", message = "Must only contain letters")
     private String lastName;

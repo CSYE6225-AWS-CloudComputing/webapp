@@ -35,6 +35,10 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws UserDoesNotExistException, IOException {
 
         if (handler instanceof HandlerMethod) {
+            if(request.getParameterMap().size()>0){
+                response.setStatus(HttpStatus.BAD_REQUEST.value());
+                return false;
+            }
             if (request.getMethod().equalsIgnoreCase("GET") || request.getMethod().equalsIgnoreCase("PUT")) {
                 // Extract Base64 encoded credentials from the Authorization header
                 String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);

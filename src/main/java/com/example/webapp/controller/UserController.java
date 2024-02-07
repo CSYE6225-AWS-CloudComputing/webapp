@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO UserDTO) throws UserExistsException, InvalidCreateRequest {
-        User userOutput=userService.createUser(UserDTO);
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws UserExistsException, InvalidCreateRequest {
+        User userOutput=userService.createUser(userDTO);
        return ResponseEntity.ok(userOutput);
     }
 

@@ -23,11 +23,11 @@ public class User {
     @Column(nullable = false)
     private String id;
 
-    @JsonProperty
+    @JsonProperty("first_name")
     @Column(nullable = false)
     private String firstName;
 
-    @JsonProperty
+    @JsonProperty("last_name")
     @Column(nullable = false)
     private String lastName;
 
@@ -40,10 +40,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL", updatable = false)
+    @JsonProperty("account_created")
+    @Column(updatable = false)
     private LocalDateTime accountCreated;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",nullable = false)
+    @JsonProperty("account_updated")
+    @Column(nullable = false)
     private LocalDateTime accountUpdated;
 
 }
