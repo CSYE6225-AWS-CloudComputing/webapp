@@ -64,20 +64,8 @@ public class UserService {
 
     public User updateUser(UserUpdateDTO userRequestBody, User user) throws InvalidUserUpdaRequestException {
         if (userRequestBody != null) {
-            if (userRequestBody.getId() != null) {
-                throw new InvalidUserUpdaRequestException("Cannot update ID");
-            }
-
-            if (userRequestBody.getAccountCreated() != null) {
-                throw new InvalidUserUpdaRequestException("Cannot update account created date");
-            }
-
-            if (userRequestBody.getAccountUpdated() != null) {
-                throw new InvalidUserUpdaRequestException("Cannot update account updated date");
-            }
-
-            if (userRequestBody.getUserName() != null) {
-                throw new InvalidUserUpdaRequestException("Cannot update userName");
+            if (userRequestBody.getId() != null || userRequestBody.getAccountCreated() != null || userRequestBody.getAccountUpdated() != null || userRequestBody.getUserName() != null) {
+                throw new InvalidUserUpdaRequestException("Cannot update ID or account_created date or account_updated date or userName");
             }
         }
         if(userRequestBody!=null && userRequestBody.getFirstName()!=null){

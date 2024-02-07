@@ -2,6 +2,7 @@ package com.example.webapp.Interceptors;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -13,6 +14,14 @@ public class PayloadCheckInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (handler instanceof HandlerMethod) {
+            String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+            if(authorizationHeader != null){
+                response.setStatus(HttpStatus.BAD_REQUEST.value());
+                response.setHeader("cache-control", "no-cache, no-store, must-revalidate");
+                response.setHeader("Pragma","no-cache");
+                response.setHeader("X-Content-Type-Options","nosniff");
+                return false;
+            }
             if(request.getMethod().equalsIgnoreCase("HEAD") || request.getMethod().equalsIgnoreCase("OPTIONS")){
                 response.setHeader("cache-control", "no-cache, no-store, must-revalidate");
                 response.setHeader("Pragma","no-cache");
