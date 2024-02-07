@@ -14,7 +14,7 @@ jobs:
         image: postgres
         env:
           POSTGRES_DB: "postgres"
-          POSTGRES_PASSWORD: "mysecretpassword"
+          POSTGRES_PASSWORD: "root"
         ports:
           - 5432:5432
         options: >-
@@ -36,13 +36,8 @@ jobs:
         run: ./mvnw clean install
 
       - name: Run Spring Boot application
-        run: |
-          nohup ./mvnw spring-boot:run > spring-boot.log 2>&1 &
-          echo $! > spring-boot.pid
+        run: ./mvnw spring-boot:run
 
-      - name: Wait for Spring Boot to start
-        run: |
-          while ! nc -z localhost 8080; do sleep 1; done
 
       - name: Stop Spring Boot application
         run: |
