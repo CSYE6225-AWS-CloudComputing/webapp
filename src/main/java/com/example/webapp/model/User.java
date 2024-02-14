@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class User {
+public class User
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
