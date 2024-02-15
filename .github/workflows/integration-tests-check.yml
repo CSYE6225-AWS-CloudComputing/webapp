@@ -34,7 +34,7 @@ jobs:
           java-version: '19'
 
       - name: Setup Maven
-        run: chmod +x mvnw && ./mvnw clean install
+        run: chmod +x mvnw && ./mvnw clean package
 
       - name: Build and Run Integration Tests
         run: mvn verify -DskipTests=false -B
