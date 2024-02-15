@@ -21,7 +21,7 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 @ExtendWith(SpringExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(classes = WebappApplication.class,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class WebappApplicationTests {
+class WebappApplicationIntegrationTest {
 
 	@LocalServerPort
 	private int port;
