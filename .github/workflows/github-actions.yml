@@ -1,4 +1,4 @@
-name: Github Actions
+name: Code Compilation
 on:
   pull_request:
     branches:

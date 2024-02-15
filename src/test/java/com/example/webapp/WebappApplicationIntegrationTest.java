@@ -35,7 +35,7 @@ class WebappApplicationIntegrationTest {
 	@Test
 	@Order(1)
 	public void testCreateUserAndGetUser() {
-		UserDTO newUser = new UserDTO("Nishanth","sayana","Nishat@gmail.com","Secure@Pass123");
+		UserDTO newUser = new UserDTO("Nishanth","sayana","Nishath@gmail.com","Secure@Pass123");
 
 		HttpHeaders headers = new HttpHeaders();
 
@@ -49,10 +49,10 @@ class WebappApplicationIntegrationTest {
 
 		// Test account retrieval
 		HttpEntity<String> getEntity = new HttpEntity<>(null, headers);
-		ResponseEntity<User> getResponse = restTemplate.withBasicAuth("Nishat@gmail.com","Secure@Pass123").exchange(url+ port + "/v1/user/self",HttpMethod.GET,getEntity, User.class);
+		ResponseEntity<User> getResponse = restTemplate.withBasicAuth("Nishath@gmail.com","Secure@Pass123").exchange(url+ port + "/v1/user/self",HttpMethod.GET,getEntity, User.class);
 		assertEquals("Get User Check",HttpStatus.OK, getResponse.getStatusCode());
 		User retrievedUser = getResponse.getBody();
-		assertEquals("Get Check after Post call","Nishat@gmail.com", retrievedUser.getUserName());
+		assertEquals("Get Check after Post call","Nishath@gmail.com", retrievedUser.getUserName());
 	}
 
 	@Test
