@@ -41,7 +41,7 @@ public class UserController {
     public ResponseEntity<User> updateUser(@Valid @RequestBody UserUpdateDTO userRequestBody, HttpServletRequest request) throws UserDoesNotExistException, InvalidUserUpdaRequestException {
 
         User userOutput=userService.updateUser(userRequestBody, (User) request.getAttribute("user"));
-        return ResponseEntity.ok(userOutput);
+        return ResponseEntity.status(204).body(userOutput);
     }
 
 
