@@ -23,4 +23,5 @@ public class AppConfig {
     public LocalValidatorFactoryBean validator() {
         return new LocalValidatorFactoryBean();
     }
+
 }

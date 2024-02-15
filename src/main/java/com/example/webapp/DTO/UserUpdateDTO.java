@@ -36,4 +36,11 @@ public class UserUpdateDTO {
 
     @JsonProperty("account_updated")
     private LocalDateTime accountUpdated;
+
+    public UserUpdateDTO(String firstName, String lastName, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+    }
+
 }
