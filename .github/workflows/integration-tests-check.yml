@@ -33,16 +33,8 @@ jobs:
           distribution: 'adopt'
           java-version: '19'
 
-      - name: Build Spring Boot application
+      - name: Setup Maven
         run: chmod +x mvnw && ./mvnw clean install
 
-      - name: Run Spring Boot application
-        run: nohup ./mvnw spring-boot:run > spring-boot.log 2>&1 & echo $! > spring-boot.pid
-
-      - name: Wait for Spring Boot to start
-        run: |
-          while ! nc -z localhost 8080; do sleep 1; done
-
-      - name: Stop Spring Boot application
-        run: |
-          pkill -f '.*spring-boot:run.*'
+      - name: Build and Run Integration Tests
+        run: mvn verify -DskipTests=false -B
