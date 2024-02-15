@@ -45,7 +45,7 @@ class WebappApplicationIntegrationTest {
 		ResponseEntity<User> createResponse = restTemplate.exchange(url+ port + "/v1/user",HttpMethod.POST, entity, User.class);
 		assertEquals("Create User Check",HttpStatus.OK, createResponse.getStatusCode());
 		User createdUser = createResponse.getBody();
-		assertEquals("UserName check after post","Nishath@gmail.com", createdUser.getUserName());
+		assertEquals(String.valueOf(createResponse),"Nishath@gmail.com", createdUser.getUserName());
 
 		// Test account retrieval
 		HttpEntity<String> getEntity = new HttpEntity<>(null, headers);
