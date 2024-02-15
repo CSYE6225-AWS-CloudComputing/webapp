@@ -36,6 +36,9 @@ jobs:
       - name: Build Spring Boot application
         run: chmod +x mvnw && ./mvnw clean install
 
+      - name: Build and Run Integration Tests
+        run: mvn verify -DskipTests=false -B
+
       - name: Run Spring Boot application
         run: nohup ./mvnw spring-boot:run > spring-boot.log 2>&1 & echo $! > spring-boot.pid
 
