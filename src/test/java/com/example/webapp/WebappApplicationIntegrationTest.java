@@ -34,7 +34,7 @@ class WebappApplicationIntegrationTest {
 
 	@Test
 	@Order(1)
-	public void testCreateUserAndGetUser() {
+	public void testCreateUserAndGetUser()
 		UserDTO newUser = new UserDTO("Nishanth","sayana","Nishath@gmail.com","Secure@Pass123");
 
 		HttpHeaders headers = new HttpHeaders();
