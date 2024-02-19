@@ -42,6 +42,7 @@ class WebappApplicationIntegrationTest {
 		HttpEntity<UserDTO> entity = new HttpEntity<>(newUser, headers);
 
 
+		//Test comments
 		ResponseEntity<String> createResponse = restTemplate.exchange(url+ port + "/v1/user",HttpMethod.POST, entity, String.class);
 		assertEquals(String.valueOf(createResponse.getBody()),HttpStatus.OK, createResponse.getStatusCode());
 //		User createdUser = createResponse.getBody();
@@ -58,6 +59,7 @@ class WebappApplicationIntegrationTest {
 	@Test
 	@Order(2)
 	public void testUpdateUserAndGetUser() {
+		//Test comments
 		HttpHeaders headers = new HttpHeaders();
 		// Assume there's an existing user in the database
 		UserUpdateDTO updateUser = new UserUpdateDTO("Nish", "sayana", "Secure@Pass123");
