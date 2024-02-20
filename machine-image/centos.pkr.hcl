@@ -25,29 +25,29 @@ variable "script_paths" {
 }
 
 variable "image_description" {
-  default ="Custom image for springboot application"
+  default = "Custom image for springboot application"
 }
 
 variable "base_image" {
-  default="centos-stream-8-v20240110"
+  default = "centos-stream-8-v20240110"
 }
 
-variable zone{
-  default="us-central1-a"
+variable zone {
+  default = "us-central1-a"
 }
 
 source "googlecompute" "custom_image" {
-  project_id       = var.project_id
-  source_image     = var.base_image
-  image_name       = "centos-{{timestamp}}"
+  project_id        = var.project_id
+  source_image      = var.base_image
+  image_name        = "centos-{{timestamp}}"
   image_description = var.image_description
-  image_labels     = {
-    created_by   = "packer"
-    environment  = "dev"
+  image_labels = {
+    created_by  = "packer"
+    environment = "dev"
   }
-  zone             = var.zone
-  ssh_username     = var.ssh_username
-  use_internal_ip  = false
+  zone            = var.zone
+  ssh_username    = var.ssh_username
+  use_internal_ip = false
 }
 
 build {
@@ -64,7 +64,7 @@ build {
   }
 
   provisioner "file" {
-    source = "./webapp.zip"
+    source      = "./webapp.zip"
     destination = "home/admin/webapp.zip"
   }
 }
