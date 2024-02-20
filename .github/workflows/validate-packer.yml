@@ -25,7 +25,9 @@ jobs:
 
       - name: Run `packer validate`
         id: validate
-        run: packer validate ./machine-image/centos.pkr.hcl
+        run: |
+          zip -r webapp.zip ./startup-scripts
+          packer validate ./machine-image/centos.pkr.hcl
 
       - name: Run `packer fmt`
         id: format
