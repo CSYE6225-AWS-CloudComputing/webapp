@@ -5,7 +5,7 @@ sudo yum update -y
 sudo yum install -y postgresql-server postgresql-contrib
 
 #Permission to alter postgres password
-sudo chmod o+rx /root
+#sudo chmod o+rx /root
 
 # Initialize the PostgreSQL database and start the service
 sudo postgresql-setup initdb
@@ -21,4 +21,3 @@ sudo -u postgres psql -c "ALTER USER postgres WITH SUPERUSER;"
 
 #restart postgres service
 sudo systemctl restart postgresql
-
