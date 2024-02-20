@@ -64,7 +64,7 @@ build {
   }
 
   provisioner "file" {
-    source = "../target/webapp-0.0.1-SNAPSHOT.jar"
-    destination = "home/admin"
+    source = "./webapp.zip"
+    destination = "home/admin/webapp.zip"
   }
 }
