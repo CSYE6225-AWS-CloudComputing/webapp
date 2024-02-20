@@ -40,7 +40,7 @@ source "googlecompute" "custom_image" {
   project_id       = var.project_id
   source_image     = var.base_image
   image_name       = "centos-{{timestamp}}"
-  image_description = var.custom_image
+  image_description = var.image_description
   image_labels     = {
     created_by   = "packer"
     environment  = "dev"
