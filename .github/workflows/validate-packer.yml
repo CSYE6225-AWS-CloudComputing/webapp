@@ -1,11 +1,11 @@
-name: Integration tests
+name: Validate Packer
 on:
   pull_request:
     branches:
       - 'main'
 
 jobs:
-  Integration-test-check:
+  Packer-validation:
     if: github.event.pull_request.head.repo.fork
     runs-on: ubuntu-latest
 
