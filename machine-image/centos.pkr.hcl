@@ -7,21 +7,25 @@ packer {
   }
 }
 
-#variable "project_id" {
-#  type    = string
-#  default = "csye6225-dev-414521"
-#}
-#provider "google"{
-#  project=csye6225-dev-414521
-#}
+variable "project_id" {
+  type    = string
+  default = "csye6225-dev-414521"
+}
 
 variable "ssh_username" {
   type    = string
   default = "admin"
 }
 
+variable "script_paths" {
+  default = [
+    "../startup-scripts/install-db.sh",
+    "../startup-scripts/install-java-maven-tomcat.sh"
+  ]
+}
+
 source "googlecompute" "custom_image" {
-  project_id       = "csye6225-dev-414521"
+  project_id       = var.project_id
   source_image     = "centos-stream-8-v20240110"
   image_name       = "centos-{{timestamp}}"
   image_description = "Custom CentOS Stream 8 image with Java and Tomcat"
@@ -38,11 +42,23 @@ build {
   sources = ["source.googlecompute.custom_image"]
 
   provisioner "shell" {
-    inline  = [
-      "sudo yum install -y unzip",
-      "chmod +x ../startup-scripts/install-db.sh ../startup-scripts/install-java-maven-tomcat.sh",
-      ". ../startup-scripts/install-db.sh",
-      ". ../startup-scripts/install-java-maven-tomcat.sh"
+    scripts = var.script_paths
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo yum install -y unzip"
+    ]
+  }
+
+  provisioner "file" {
+    source = "../webapp.zip"
+    destination = "/home/admin/webapp.zip"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo mv /tmp/webapp.zip /"
     ]
   }
 }
