@@ -24,16 +24,28 @@ variable "script_paths" {
   ]
 }
 
+variable "image_description" {
+  default ="Custom image for springboot application"
+}
+
+variable "base_image" {
+  default="centos-stream-8-v20240110"
+}
+
+variable zone{
+  default="us-central1-a"
+}
+
 source "googlecompute" "custom_image" {
   project_id       = var.project_id
-  source_image     = "centos-stream-8-v20240110"
+  source_image     = var.base_image
   image_name       = "centos-{{timestamp}}"
-  image_description = "Custom CentOS Stream 8 image with Java and Tomcat"
+  image_description = var.custom_image
   image_labels     = {
     created_by   = "packer"
     environment  = "dev"
   }
-  zone             = "us-central1-a"
+  zone             = var.zone
   ssh_username     = var.ssh_username
   use_internal_ip  = false
 }
@@ -52,13 +64,7 @@ build {
   }
 
   provisioner "file" {
-    source = "../webapp.zip"
-    destination = "/home/admin/webapp.zip"
-  }
-
-  provisioner "shell" {
-    inline = [
-      "sudo mv /tmp/webapp.zip /"
-    ]
+    source = "../target/webapp-0.0.1-SNAPSHOT.jar"
+    destination = "home/admin"
   }
 }
