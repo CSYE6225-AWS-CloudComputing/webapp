@@ -31,4 +31,4 @@ jobs:
 
       - name: Run `packer fmt`
         id: format
-        run: packer fmt ./machine-image/centos.pkr.hcl -check=true
+        run: packer fmt -check=true ./machine-image/centos.pkr.hcl
