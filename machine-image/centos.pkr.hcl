@@ -65,17 +65,11 @@ build {
       "sudo yum update unzip",
       "sudo mkdir -p ../csye6225/webapp",
       "sudo cp /home/admin/webapp.zip ../csye6225/webapp",
-      "cd ../csye6225/webapp",
-      "pwd",
-      "ls",
-      "sudo unzip webapp.zip",
-      "ls"
+      "cd ../csye6225/webapp"
     ]
   }
 
   provisioner "shell" {
     scripts = var.script_paths
   }
-
-
 }
