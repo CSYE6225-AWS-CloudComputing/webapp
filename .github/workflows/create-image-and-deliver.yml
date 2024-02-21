@@ -59,10 +59,10 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
 
       - name: Set up Packer
-        uses: hashicorp/setup-packer@v1
+        uses: hashicorp/setup-packer@main
         id: setup
         with:
-            version: '1.8.6'
+          version: 'latest'
 
       - name: Run `packer init`
         id: init
