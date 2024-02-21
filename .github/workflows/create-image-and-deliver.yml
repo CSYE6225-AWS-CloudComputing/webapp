@@ -73,4 +73,4 @@ jobs:
         run: packer validate ./machine-image/centos.pkr.hcl
 
       - name: Run packer script
-        run: packer build -debug ./machine-image/centos.pkr.hcl
+        run: packer build ./machine-image/centos.pkr.hcl
