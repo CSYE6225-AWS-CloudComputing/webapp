@@ -44,8 +44,8 @@ jobs:
       - name: Zip Project
         run: |
           zip -r webapp.zip ./target ./startup-scripts
-          echo pwd
-          echo ls -l
+          pwd
+          ls -l
 
       - name: Authenticate with Google Cloud
         id: auth
