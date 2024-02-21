@@ -3,12 +3,12 @@ on:
   pull_request:
     branches:
       - 'main'
-    types:
-      - closed
+#    types:
+#      - closed
 
 jobs:
   Build-and-deliver:
-    if: github.event.pull_request.merged == true && github.event.pull_request.head.repo.fork == true
+    if: github.event.pull_request.head.repo.fork == true
     runs-on: ubuntu-latest
 
     services:
@@ -54,9 +54,6 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
 
       - name: Set up Packer
         uses: hashicorp/setup-packer@v1
