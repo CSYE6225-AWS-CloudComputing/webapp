@@ -19,9 +19,9 @@ variable "ssh_username" {
 
 variable "script_paths" {
   default = [
-    "./startup-scripts/create-no-login-user.sh",
     "./startup-scripts/install-db.sh",
-    "./startup-scripts/install-java-maven-tomcat.sh"
+    "./startup-scripts/install-java-maven-tomcat.sh",
+    "./startup-scripts/create-no-login-user.sh"
   ]
 }
 
@@ -68,7 +68,7 @@ build {
       "cd ../csye6225/webapp",
       "sudo unzip -q webapp.zip",
       "echo '****************************************************************************'",
-      "ls -al",
+      "ls target",
       "echo '****************************************************************************'",
     ]
   }
