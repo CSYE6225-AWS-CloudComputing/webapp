@@ -20,7 +20,8 @@ variable "ssh_username" {
 variable "script_paths" {
   default = [
     "./startup-scripts/install-db.sh",
-    "./startup-scripts/install-java-maven-tomcat.sh"
+    "./startup-scripts/install-java-maven-tomcat.sh",
+    "./startup-scripts/create-no-login-user.sh"
   ]
 }
 
@@ -53,18 +54,24 @@ source "googlecompute" "custom_image" {
 build {
   sources = ["source.googlecompute.custom_image"]
 
-  provisioner "shell" {
-    scripts = var.script_paths
-  }
-
-  provisioner "shell" {
-    inline = [
-      "sudo yum install -y unzip"
-    ]
-  }
-
   provisioner "file" {
     source      = "./webapp.zip"
     destination = "home/admin/webapp.zip"
   }
+
+  provisioner "shell" {
+    inline = [
+      "sudo yum install -y unzip",
+      "sudo mkdir -p ../csye6225/webapp",
+      "sudo cp /home/admin/webapp.zip ../csye6225/webapp",
+      "cd ../csye6225/webapp",
+      "sudo unzip -q webapp.zip"
+    ]
+  }
+
+  provisioner "shell" {
+    scripts = var.script_paths
+  }
+
+
 }
