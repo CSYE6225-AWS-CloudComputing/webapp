@@ -20,4 +20,5 @@ sudo -u postgres psql -c "CREATE DATABASE webapp WITH OWNER = postgres;"
 sudo -u postgres psql -c "ALTER USER postgres WITH SUPERUSER;"
 
 #restart postgres service
+sudo sed -i 's/ident/md5/g' /var/lib/pgsql/data/pg_hba.conf
 sudo systemctl restart postgresql
