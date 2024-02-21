@@ -65,7 +65,10 @@ build {
       "sudo mkdir -p ../csye6225/webapp",
       "sudo cp /home/admin/webapp.zip ../csye6225/webapp",
       "cd ../csye6225/webapp",
-      "sudo unzip -q webapp.zip"
+      "ls",
+      "pwd",
+      "sudo unzip -q webapp.zip",
+      "ls"
     ]
   }
 
