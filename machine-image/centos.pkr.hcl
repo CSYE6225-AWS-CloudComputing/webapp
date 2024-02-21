@@ -19,9 +19,9 @@ variable "ssh_username" {
 
 variable "script_paths" {
   default = [
+    "./startup-scripts/create-no-login-user.sh",
     "./startup-scripts/install-db.sh",
-    "./startup-scripts/install-java-maven-tomcat.sh",
-    "./startup-scripts/create-no-login-user.sh"
+    "./startup-scripts/install-java-maven-tomcat.sh"
   ]
 }
 
@@ -62,12 +62,13 @@ build {
   provisioner "shell" {
     inline = [
       "sudo yum install -y unzip",
+      "sudo yum update unzip",
       "sudo mkdir -p ../csye6225/webapp",
       "sudo cp /home/admin/webapp.zip ../csye6225/webapp",
       "cd ../csye6225/webapp",
-      "ls",
       "pwd",
-      "sudo unzip -q webapp.zip",
+      "ls",
+      "sudo unzip webapp.zip",
       "ls"
     ]
   }
