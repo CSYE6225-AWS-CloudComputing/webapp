@@ -52,9 +52,8 @@ jobs:
       - name: Authenticate with Google Cloud
         id: auth
         uses: google-github-actions/auth@v2
-        with:
-          env:
-            credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+        env:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
       - name: Set up Packer
         uses: hashicorp/setup-packer@main
