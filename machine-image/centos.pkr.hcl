@@ -26,7 +26,7 @@ variable "script_paths" {
 }
 
 variable "image_description" {
-  default = "Custom image for springboot application"
+  default =       "Custom image for springboot application"
 }
 
 variable "base_image" {
