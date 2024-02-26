@@ -1,6 +1,6 @@
 [Unit]
 Description=webapp
-ConditionPathExists=file:/opt/application.properties
+ConditionPathExists=/home/csye6225/webapp/target/webapp-0.0.1-SNAPSHOT.jar
 After=network.target
 
 
