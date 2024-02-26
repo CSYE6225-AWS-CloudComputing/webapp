@@ -3,6 +3,7 @@ Description=webapp
 ConditionPathExists=file:/opt/application.properties
 After=network.target
 
+
 [Service]
 Type=simple
 User=csye6225
