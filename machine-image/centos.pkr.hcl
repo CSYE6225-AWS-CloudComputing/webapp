@@ -27,7 +27,7 @@ variable "script_paths" {
 
 variable "image_description" {
   default = "Custom image for springboot application"
-
+}
 
 variable "base_image" {
   default = "centos-stream-8-v20240110"
