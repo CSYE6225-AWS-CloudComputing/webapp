@@ -21,7 +21,8 @@ jobs:
           sudo systemctl enable postgresql
           cd /home/runner/work/webapp/webapp
           ls -ld /home/runner/work/webapp/webapp
-
+          echo "dir"
+          echo $pwd
           sudo chmod o+rx /home/runner/work/webapp/webapp
 
           sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'root';"
