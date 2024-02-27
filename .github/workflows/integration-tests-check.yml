@@ -30,7 +30,7 @@ jobs:
           
           # Grant necessary privileges to the user
           sudo -u postgres psql -c "ALTER USER postgres WITH SUPERUSER;"
-          
+          echo "changeeee"
           # Restart PostgreSQL service
           sudo sed -i 's/peer/scram-sha-256/' /etc/postgresql/*/main/pg_ident.conf
           sudo systemctl restart postgresql
