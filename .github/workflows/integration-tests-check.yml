@@ -16,22 +16,17 @@ jobs:
           
           # Install PostgreSQL
           sudo apt-get install -y postgresql postgresql-contrib
+          sudo sed -i 's/peer/scram-sha-256/' /etc/postgresql/*/main/pg_ident.conf
           
-          # Initialize the PostgreSQL database and start the service
+          
+          sudo systemctl start postgresql.service
           sudo systemctl enable postgresql
-          cd /home/runner/work/webapp/webapp
-          ls -ld /home/runner/work/webapp/webapp
-          cd /home/runner/work/webapp/webapp
-          echo "dir"
-          echo $pwd
-          sudo chmod o+rx /home/runner/work/webapp/webapp
-
+          
+          sudo -u postgres psql template1
+          
           sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'root';"
           sudo -u postgres psql -c "CREATE DATABASE webapp WITH OWNER = postgres;"
 
-          sudo -u postgres psql -c "ALTER USER postgres WITH SUPERUSER;"
-          # Restart PostgreSQL service
-          sudo sed -i 's/peer/scram-sha-256/' /etc/postgresql/*/main/pg_ident.conf
           sudo systemctl restart postgresql
 
 
