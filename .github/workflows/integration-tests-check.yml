@@ -20,7 +20,7 @@ jobs:
           # Initialize the PostgreSQL database and start the service
           sudo systemctl enable postgresql
           echo $pwd
-          sudo chmod o+rx /home/admin
+          sudo chmod o+rx /home/runner/work/webapp/webapp
 
           # Create a PostgreSQL user and database for your Spring Boot project
           sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'root';"
