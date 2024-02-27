@@ -23,7 +23,7 @@ jobs:
           ls -ld /home/runner/work/webapp/webapp
           sudo -s /home/runner/work/webapp/webapp
 
-          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'root';" -d /home/runner/work/webapp/webapp
+          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'root';"
           sudo -u postgres psql -c "CREATE DATABASE webapp WITH OWNER = postgres;"
 
           sudo -u postgres psql -c "ALTER USER postgres WITH SUPERUSER;"
