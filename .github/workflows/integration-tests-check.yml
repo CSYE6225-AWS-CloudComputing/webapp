@@ -21,7 +21,9 @@ jobs:
           sudo systemctl enable postgresql
 
           echo $pwd
+           echo "changeeee"
           cd /home/runner/work/webapp/webapp
+           echo "changeeee"
           echo $pwd
 
           # Create a PostgreSQL user and database for your Spring Boot project
