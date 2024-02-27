@@ -19,7 +19,7 @@ jobs:
           sudo sed -i 's/peer/scram-sha-256/' /etc/postgresql/*/main/pg_ident.conf
           
           
-          sudo systemctl start postgresql.service
+          sudo systemctl start postgresql
           sudo systemctl enable postgresql
           
           sudo -u postgres psql template1
