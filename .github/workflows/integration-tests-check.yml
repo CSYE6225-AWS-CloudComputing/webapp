@@ -25,11 +25,11 @@ jobs:
           cd /home/runner/work/webapp/webapp
            echo "changeeee"
           echo $pwd
-
+          echo "changeeee-2"
           # Create a PostgreSQL user and database for your Spring Boot project
           sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'root';"
           sudo -u postgres psql -c "CREATE DATABASE webapp WITH OWNER = postgres;"
-          
+          echo "changeeee-1"
           # Grant necessary privileges to the user
           sudo -u postgres psql -c "ALTER USER postgres WITH SUPERUSER;"
           echo "changeeee"
