@@ -9,21 +9,15 @@ jobs:
     if: github.event.pull_request.head.repo.fork
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_DB: "webapp"
-          POSTGRES_USER: "postgres"
-          POSTGRES_PASSWORD: "root"
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
+      - name: Set up PostgreSQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install postgresql postgresql-contrib
+          sudo service postgresql start
+          psql -U postgres -c "CREATE DATABASE webapp;"
+          psql -U postgres -c "CREATE USER postgres WITH PASSWORD 'root';"
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 
