@@ -19,6 +19,7 @@ jobs:
           
           # Initialize the PostgreSQL database and start the service
           sudo systemctl enable postgresql
+          echo pwd
           sudo chmod o+rx /home/runner/work/webapp/webapp
 
           # Create a PostgreSQL user and database for your Spring Boot project
@@ -29,7 +30,7 @@ jobs:
           sudo -u postgres psql -c "ALTER USER postgres WITH SUPERUSER;"
           
           # Restart PostgreSQL service
-          sudo sed -i 's/peer/trust/' /etc/postgresql/*/main/pg_hba.conf
+          sudo sed -i 's/peer/scram-sha-256/' /etc/postgresql/*/main/pg_ident.conf
           sudo systemctl restart postgresql
 
 
