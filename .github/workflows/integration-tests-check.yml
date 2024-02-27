@@ -13,13 +13,11 @@ jobs:
       - name: Set up PostgreSQL
         run: |
           sudo apt-get update
-          sudo apt-get upgrade -y
           
           # Install PostgreSQL
           sudo apt-get install -y postgresql postgresql-contrib
           
           # Initialize the PostgreSQL database and start the service
-          sudo pg_ctlcluster 13 main start
           sudo systemctl enable postgresql
           
           # Create a PostgreSQL user and database for your Spring Boot project
