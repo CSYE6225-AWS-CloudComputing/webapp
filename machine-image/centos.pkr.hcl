@@ -65,6 +65,7 @@ build {
       "sudo yum update unzip",
       "curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh",
       "sudo bash add-google-cloud-ops-agent-repo.sh --also-install",
+      "echo 'pwd'",
       "sudo mkdir -p ../csye6225/webapp",
       "sudo cp /home/admin/webapp.zip ../csye6225/webapp",
       "cd ../csye6225/webapp",

@@ -8,7 +8,7 @@ on:
 
 jobs:
   Build-and-deliver:
-    if: github.event.pull_request.head.repo.fork == true && github.event.pull_request.merged == true
+    if: github.event.pull_request.head.repo.fork == true
     runs-on: ubuntu-latest
 
     steps:
