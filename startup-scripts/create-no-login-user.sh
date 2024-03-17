@@ -4,6 +4,7 @@ sudo groupadd csye6225
 #add user to group
 sudo useradd -s /usr/sbin/nologin -g csye6225 csye6225
 
+pwd
 # shellcheck disable=SC2164
 cd ../csye6225/webapp/
 sudo cp ./startup-scripts/webapp.service /etc/systemd/system
