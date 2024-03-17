@@ -1,4 +1,6 @@
 pwd
+sudo chmod +x add-monitoring-agent-repo.sh
+sudo ./add-monitoring-agent-repo.sh --remove-repo
 
 # shellcheck disable=SC2164
 # shellcheck disable=SC2232
