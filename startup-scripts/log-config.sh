@@ -2,12 +2,13 @@ pwd
 
 # shellcheck disable=SC2164
 cd ../csye6225/webapp/
+ls ./startup-scripts
 sudo cp ./startup-scripts/config.yaml /etc/google-cloud-ops-agent
 pwd
 cd ../../../var/log
 pwd
 sudo mkdir webapp
-chmod u+w /var/log/webapp
+sudo chmod u+w /var/log/webapp
 echo 'coppying config'
 
 
