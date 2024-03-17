@@ -1,8 +1,10 @@
 pwd
+su - csye6225
 # shellcheck disable=SC2164
 # shellcheck disable=SC2232
-sudo cd ../csye6225/webapp/
-ls ./startup-scripts
+cd ../csye6225/webapp/
+pwd
+ls
 sudo cp ./startup-scripts/config.yaml /etc/google-cloud-ops-agent
 pwd
 # shellcheck disable=SC2164
