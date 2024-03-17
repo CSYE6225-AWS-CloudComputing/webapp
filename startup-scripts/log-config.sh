@@ -5,7 +5,7 @@ chmod u+w /var/log/webapp
 echo 'coppying config'
 pwd
 # shellcheck disable=SC2164
-cd /csye6225/webapp/
+cd /home/csye6225/webapp
 sudo cp ./startup-scripts/config.yaml /etc/google-cloud-ops-agent
 
 sudo vi /etc/google-cloud-ops-agent/config.yaml
