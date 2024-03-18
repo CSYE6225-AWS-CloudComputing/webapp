@@ -34,7 +34,10 @@ public class UserController {
     public ResponseEntity<User> getUser(HttpServletRequest request) {
 
         User userOutput=(User) request.getAttribute("user");
-
+        UUID correlationId = UUID.randomUUID();
+        long startTime = System.currentTimeMillis();
+        long duration = System.currentTimeMillis() - startTime;
+        log(request, ResponseEntity.ok(userOutput), correlationId, duration);
         return ResponseEntity.ok(userOutput);
     }
 
@@ -43,7 +46,6 @@ public class UserController {
         User userOutput=userService.createUser(userDTO);
         UUID correlationId = UUID.randomUUID();
         long startTime = System.currentTimeMillis();
-        request.getRequestURI();
         long duration = System.currentTimeMillis() - startTime;
         log(request, ResponseEntity.ok(userOutput), correlationId, duration);
        return ResponseEntity.ok(userOutput);
@@ -53,6 +55,10 @@ public class UserController {
     public ResponseEntity<User> updateUser(@Valid @RequestBody UserUpdateDTO userRequestBody, HttpServletRequest request) throws UserDoesNotExistException, InvalidUserUpdaRequestException {
 
         User userOutput=userService.updateUser(userRequestBody, (User) request.getAttribute("user"));
+        UUID correlationId = UUID.randomUUID();
+        long startTime = System.currentTimeMillis();
+        long duration = System.currentTimeMillis() - startTime;
+        log(request, ResponseEntity.status(204).body(userOutput), correlationId, duration);
         return ResponseEntity.status(204).body(userOutput);
     }
 
