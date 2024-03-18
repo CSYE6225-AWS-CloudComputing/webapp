@@ -20,8 +20,7 @@ variable "ssh_username" {
 variable "script_paths" {
   default = [
     "./startup-scripts/install-java-maven-tomcat.sh",
-    "./startup-scripts/create-no-login-user.sh",
-    "./startup-scripts/log-config.sh"
+    "./startup-scripts/create-no-login-user.sh"
   ]
 }
 

@@ -9,7 +9,12 @@ pwd
 cd ../csye6225/webapp/
 pwd
 sudo cp ./startup-scripts/webapp.service /etc/systemd/system
-
+sudo cp ./startup-scripts/config.yaml /etc/google-cloud-ops-agent
+# shellcheck disable=SC2164
+cd ../../../var/log
+pwd
+sudo mkdir webapp
+sudo chmod u+w /var/log/webapp
 sudo chown -R csye6225:csye6225 /home/csye6225/webapp
 sudo chmod 744 /home/csye6225/webapp
 
