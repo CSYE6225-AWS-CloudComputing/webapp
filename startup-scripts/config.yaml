@@ -7,11 +7,18 @@ logging:
       record_log_file_path: true
   processors:
     my-app-processor:
-      type: parse_json
+      type: parse_regex
+      field: message
+      regex: '^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) \[(?<thread>[^\]]+)\] (?<severity>\S+) (?<logger>[^ ]+) - (?<msg>.*)$'
       time_key: time
       time_format: "%Y-%m-%d %H:%M:%S,%L"
+    move_severity:
+      type: modify_fields
+      fields:
+        severity:
+          move_from: jsonPayload.severity
   service:
     pipelines:
       default_pipeline:
         receivers: [my-app-receiver]
-        processors: [my-app-processor]
+        processors: [my-app-processor, move_severity]
