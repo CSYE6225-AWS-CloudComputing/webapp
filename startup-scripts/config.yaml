@@ -17,8 +17,13 @@ logging:
       fields:
         severity:
           move_from: jsonPayload.severity
+    parse_java_multiline:
+      type: parse_multiline
+      match_any:
+        - type: language_exceptions
+          language: java
   service:
     pipelines:
       default_pipeline:
         receivers: [my-app-receiver]
-        processors: [my-app-processor, move_severity]
+        processors: [my-app-processor, move_severity, parse_java_multiline]
