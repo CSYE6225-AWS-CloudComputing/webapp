@@ -26,7 +26,7 @@ sudo chmod -R 775 /var/log/webapp/
 sudo chown csye6225:csye6225 /var/log/webapp/myapp.log
 sudo chmod 664 /var/log/webapp/myapp.log
 
-
+sudo systemctl restart google-cloud-ops-agent
 sudo systemctl daemon-reload
 sudo systemctl enable webapp
 sudo systemctl start webapp

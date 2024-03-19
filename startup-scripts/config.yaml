@@ -9,9 +9,9 @@ logging:
     my-app-processor:
       type: parse_regex
       field: message
-      regex: '^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) \[(?<thread>[^\]]+)\] (?<severity>\S+) (?<logger>[^ ]+) - (?<msg>.*)$'
+      regex: '^{.*"epochSecond" : (?<timestamp>\d+).*"thread" : "(?<thread>[^"]+)".*"level" : "(?<severity>[^"]+)".*"loggerName" : "(?<logger>[^"]+)".*"message" : "(?<message>[^"]+)"'
       time_key: time
-      time_format: "%Y-%m-%d %H:%M:%S,%L"
+      time_format: "%Y-%m-%d %H:%M:%S.%L"
     move_severity:
       type: modify_fields
       fields:
