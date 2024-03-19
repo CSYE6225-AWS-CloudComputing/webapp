@@ -43,9 +43,9 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO,HttpServletRequest request) throws UserExistsException, InvalidCreateRequest {
+        long startTime = System.currentTimeMillis();
         User userOutput=userService.createUser(userDTO);
         UUID correlationId = UUID.randomUUID();
-        long startTime = System.currentTimeMillis();
         long duration = System.currentTimeMillis() - startTime;
         log(request, ResponseEntity.ok(userOutput), correlationId, duration);
        return ResponseEntity.ok(userOutput);
@@ -54,9 +54,9 @@ public class UserController {
     @PutMapping("/self")
     public ResponseEntity<User> updateUser(@Valid @RequestBody UserUpdateDTO userRequestBody, HttpServletRequest request) throws UserDoesNotExistException, InvalidUserUpdaRequestException {
 
+        long startTime = System.currentTimeMillis();
         User userOutput=userService.updateUser(userRequestBody, (User) request.getAttribute("user"));
         UUID correlationId = UUID.randomUUID();
-        long startTime = System.currentTimeMillis();
         long duration = System.currentTimeMillis() - startTime;
         log(request, ResponseEntity.status(204).body(userOutput), correlationId, duration);
         return ResponseEntity.status(204).body(userOutput);

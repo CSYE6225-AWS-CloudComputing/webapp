@@ -42,7 +42,6 @@ public class HealthCheckController {
     }
 
     private void log(HttpServletRequest request, ResponseEntity<?> response, UUID correlationId, long duration) {
-        logger.info("Logging From Controller");
         HttpStatus httpStatus = HttpStatus.resolve(response.getStatusCode().value());
         if (httpStatus != null) {
             if ((httpStatus.value() >= HttpStatus.BAD_REQUEST.value() && httpStatus.value() <= HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS.value()) || (httpStatus.value() >= HttpStatus.INTERNAL_SERVER_ERROR.value() && httpStatus.value() <= HttpStatus.NETWORK_AUTHENTICATION_REQUIRED.value())) {
