@@ -7,16 +7,14 @@ logging:
       record_log_file_path: true
   processors:
     my-app-processor:
-      type: parse_regex
-      field: message
-      regex: '^{.*"epochSecond" : (?<timestamp>\d+).*"thread" : "(?<thread>[^"]+)".*"level" : "(?<severity>[^"]+)".*"loggerName" : "(?<logger>[^"]+)".*"message" : "(?<message>[^"]+)"'
-      time_key: time
-      time_format: "%Y-%m-%d %H:%M:%S.%L"
+      type: parse_json
+      time_key: instant.epochSecond
+      time_format: "%s"
     move_severity:
       type: modify_fields
       fields:
         severity:
-          move_from: jsonPayload.severity
+          move_from: jsonPayload.level
     parse_java_multiline:
       type: parse_multiline
       match_any:

@@ -20,13 +20,11 @@ sudo chown -R csye6225:csye6225 /home/csye6225/webapp
 sudo chmod 744 /home/csye6225/webapp
 
 echo "Now giving permissions to application to write in log file"
-
 sudo chown -R csye6225:csye6225 /var/log/webapp/
 sudo chmod -R 775 /var/log/webapp/
 sudo chown csye6225:csye6225 /var/log/webapp/myapp.log
 sudo chmod 664 /var/log/webapp/myapp.log
 
-sudo systemctl restart google-cloud-ops-agent
 sudo systemctl daemon-reload
 sudo systemctl enable webapp
 sudo systemctl start webapp
