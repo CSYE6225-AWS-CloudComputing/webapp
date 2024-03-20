@@ -10,6 +10,7 @@ cd ../csye6225/webapp/
 pwd
 sudo cp ./startup-scripts/webapp.service /etc/systemd/system
 sudo cp ./startup-scripts/config.yaml /etc/google-cloud-ops-agent
+sudo systemctl restart google-cloud-ops-agent
 # shellcheck disable=SC2164
 cd ../../../var/log
 pwd

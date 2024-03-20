@@ -8,20 +8,17 @@ logging:
   processors:
     my-app-processor:
       type: parse_json
-      time_key: instant.epochSecond
-      time_format: "%s"
+      time_key: timeMillis
+      time_format:  "%f"
     move_severity:
       type: modify_fields
       fields:
         severity:
           move_from: jsonPayload.level
-    parse_java_multiline:
-      type: parse_multiline
-      match_any:
-        - type: language_exceptions
-          language: java
+          map_values:
+            WARN: WARNING
   service:
     pipelines:
       default_pipeline:
         receivers: [my-app-receiver]
-        processors: [my-app-processor, move_severity, parse_java_multiline]
+        processors: [my-app-processor, move_severity]
