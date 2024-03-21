@@ -3,11 +3,12 @@ on:
   pull_request:
     branches:
       - 'main'
+    type: closed
 
 
 jobs:
   Build-and-deliver:
-    if: github.event.pull_request.head.repo.fork == true
+    if: github.event.pull_request.head.repo.fork == true && github.event.pull_request.head.repo.fork.merged == true
     runs-on: ubuntu-latest
 
     steps:
