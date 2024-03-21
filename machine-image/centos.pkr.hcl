@@ -20,8 +20,7 @@ variable "ssh_username" {
 variable "script_paths" {
   default = [
     "./startup-scripts/install-java-maven-tomcat.sh",
-    "./startup-scripts/create-no-login-user.sh",
-    "./startup-scripts/log-config.sh"
+    "./startup-scripts/create-no-login-user.sh"
   ]
 }
 
@@ -65,6 +64,7 @@ build {
       "sudo yum update unzip",
       "curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh",
       "sudo bash add-google-cloud-ops-agent-repo.sh --also-install",
+      "pwd",
       "sudo mkdir -p ../csye6225/webapp",
       "sudo cp /home/admin/webapp.zip ../csye6225/webapp",
       "cd ../csye6225/webapp",

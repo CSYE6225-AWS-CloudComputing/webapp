@@ -34,16 +34,18 @@ public class UserController {
     public ResponseEntity<User> getUser(HttpServletRequest request) {
 
         User userOutput=(User) request.getAttribute("user");
-
+        UUID correlationId = UUID.randomUUID();
+        long startTime = System.currentTimeMillis();
+        long duration = System.currentTimeMillis() - startTime;
+        log(request, ResponseEntity.ok(userOutput), correlationId, duration);
         return ResponseEntity.ok(userOutput);
     }
 
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO,HttpServletRequest request) throws UserExistsException, InvalidCreateRequest {
+        long startTime = System.currentTimeMillis();
         User userOutput=userService.createUser(userDTO);
         UUID correlationId = UUID.randomUUID();
-        long startTime = System.currentTimeMillis();
-        request.getRequestURI();
         long duration = System.currentTimeMillis() - startTime;
         log(request, ResponseEntity.ok(userOutput), correlationId, duration);
        return ResponseEntity.ok(userOutput);
@@ -52,11 +54,15 @@ public class UserController {
     @PutMapping("/self")
     public ResponseEntity<User> updateUser(@Valid @RequestBody UserUpdateDTO userRequestBody, HttpServletRequest request) throws UserDoesNotExistException, InvalidUserUpdaRequestException {
 
+        long startTime = System.currentTimeMillis();
         User userOutput=userService.updateUser(userRequestBody, (User) request.getAttribute("user"));
+        UUID correlationId = UUID.randomUUID();
+        long duration = System.currentTimeMillis() - startTime;
+        log(request, ResponseEntity.status(204).body(userOutput), correlationId, duration);
         return ResponseEntity.status(204).body(userOutput);
     }
 
-    private void log(HttpServletRequest request, ResponseEntity<?> response, UUID correlationId, long duration) {
+    private void log(HttpServletRequest request, ResponseEntity<?> response, UUID correlationId, long duration) {;
         HttpStatus httpStatus = HttpStatus.resolve(response.getStatusCode().value());
         if (httpStatus != null) {
             if ((httpStatus.value() >= HttpStatus.BAD_REQUEST.value() && httpStatus.value() <= HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS.value()) || (httpStatus.value() >= HttpStatus.INTERNAL_SERVER_ERROR.value() && httpStatus.value() <= HttpStatus.NETWORK_AUTHENTICATION_REQUIRED.value())) {
