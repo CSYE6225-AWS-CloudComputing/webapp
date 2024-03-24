@@ -7,6 +7,7 @@ import com.example.webapp.controlleradvice.InvalidUserUpdaRequestException;
 import com.example.webapp.controlleradvice.UserDoesNotExistException;
 import com.example.webapp.controlleradvice.UserExistsException;
 import com.example.webapp.model.User;
+import com.example.webapp.service.PubSubService;
 import com.example.webapp.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -29,6 +31,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private PubSubService pubSubService;
 
     @GetMapping("/self")
     public ResponseEntity<User> getUser(HttpServletRequest request) {
@@ -42,12 +47,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO,HttpServletRequest request) throws UserExistsException, InvalidCreateRequest {
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO,HttpServletRequest request) throws UserExistsException, InvalidCreateRequest, IOException {
         long startTime = System.currentTimeMillis();
         User userOutput=userService.createUser(userDTO);
         UUID correlationId = UUID.randomUUID();
         long duration = System.currentTimeMillis() - startTime;
         log(request, ResponseEntity.ok(userOutput), correlationId, duration);
+        pubSubService.publishMessageToCloudFunction(ResponseEntity.ok(userOutput));
        return ResponseEntity.ok(userOutput);
     }
 
@@ -60,6 +66,18 @@ public class UserController {
         long duration = System.currentTimeMillis() - startTime;
         log(request, ResponseEntity.status(204).body(userOutput), correlationId, duration);
         return ResponseEntity.status(204).body(userOutput);
+    }
+
+    @GetMapping("/authenticate")
+    public ResponseEntity userAuthentication(@RequestParam String verificationToken, HttpServletRequest request){
+        long startTime = System.currentTimeMillis();
+        boolean isVerified=userService.verifyToken(verificationToken);
+        long duration = System.currentTimeMillis() - startTime;
+        UUID correlationId = UUID.randomUUID();
+        if(isVerified) return ResponseEntity.ok().build();
+        log(request, ResponseEntity.status(200).build(), correlationId, duration);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
     }
 
     private void log(HttpServletRequest request, ResponseEntity<?> response, UUID correlationId, long duration) {;
