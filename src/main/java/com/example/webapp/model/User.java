@@ -48,6 +48,9 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime accountUpdated;
 
+    @JsonIgnore
+    boolean isAuthenticated;
+
     public User(String firstName, String lastName, String userName, String password) {
         this.firstName = firstName;
         this.lastName = lastName;

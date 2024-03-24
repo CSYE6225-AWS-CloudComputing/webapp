@@ -38,8 +38,9 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
             if(request.getMethod().equalsIgnoreCase("OPTIONS") || request.getMethod().equalsIgnoreCase("HEAD")){
                 response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
                 return false;
-            }
-            if(request.getParameterMap().size()>0){
+            }if(request.getMethod().equalsIgnoreCase("Get") &&request.getRequestURI().equalsIgnoreCase("/v1/user/authenticate") && request.getParameterMap().size()>0){
+                return true;
+            }if(request.getParameterMap().size()>0){
                 response.setStatus(HttpStatus.BAD_REQUEST.value());
                 return false;
             }
@@ -57,6 +58,12 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
                         String password = usernamePassword[1];
 
                         User user = userService.getUser(username);
+                        if(!user.isAuthenticated()){
+                            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"message\": \"" +"User not verified"+ "\"}");
+                            return false;
+                        }
 
                         // Check if the user exists and the password matches
                         if (!passwordEncoder.matches(password, user.getPassword())) {

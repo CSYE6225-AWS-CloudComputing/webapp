@@ -14,11 +14,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Base64;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
 public class UserService {
+
+    @Autowired
+    private PubSubService pubSubService;
 
     @Autowired
     UserDAO userDAO;
@@ -52,8 +58,37 @@ public class UserService {
         User user=modelMapper.map(userDTO,User.class);
         user.setAccountCreated(LocalDateTime.now());
         user.setAccountUpdated(user.getAccountCreated());
+        user.setAuthenticated(false);
         return userDAO.save(user);
+    }
 
+    public boolean verifyToken(String receivedToken) {
+        try {
+            // Decode the received token from Base64
+            byte[] decodedBytes = Base64.getDecoder().decode(receivedToken);
+            // Convert the decoded bytes to a string
+            String decodedToken = new String(decodedBytes);
+            // Split the decoded token into email and timestamp
+            String[] parts = decodedToken.split(":");
+            // Extract email and timestamp
+            String email = parts[0];
+            long timestamp = Long.parseLong(parts[1]);
+
+            long currentTime = new Date().getTime();
+            long expiryTime = currentTime - (2 * 60 * 1000);
+            Optional<User> userOutput=userDAO.findUserByUserNameIgnoreCase(email);
+            if(userOutput.isEmpty()) return false;
+            User updateUser=userOutput.get();
+            if(timestamp >= expiryTime){
+                updateUser.setAuthenticated(true);
+                userDAO.save(updateUser);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false; // If any error occurs during decoding or validation, consider the token invalid
+        }
     }
 
     public User getUser(String userName) throws UserDoesNotExistException {
