@@ -29,7 +29,7 @@ variable "image_description" {
 }
 
 variable "base_image" {
-  default = "centos-stream-8-v20240110"
+  default = "centos-stream-8-v20240312"
 }
 
 variable zone {
