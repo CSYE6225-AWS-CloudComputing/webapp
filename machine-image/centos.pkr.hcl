@@ -9,7 +9,7 @@ packer {
 
 variable "project_id" {
   type    = string
-  default = "cloud-networking-project"
+  default = "csye6225-dev-414521"
 }
 
 variable "ssh_username" {
@@ -29,11 +29,11 @@ variable "image_description" {
 }
 
 variable "base_image" {
-  default = "centos-stream-8-v20240312"
+  default = "centos-stream-8-v20240110"
 }
 
 variable zone {
-  default = "us-east1-b"
+  default = "us-central1-a"
 }
 
 source "googlecompute" "custom_image" {
