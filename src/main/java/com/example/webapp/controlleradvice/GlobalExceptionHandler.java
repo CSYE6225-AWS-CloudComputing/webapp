@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(responseMap, status);
     }
 
-    @ExceptionHandler({UserDoesNotExistException.class, IOException.class})
+    @ExceptionHandler({UserDoesNotExistException.class})
     public ResponseEntity<Object> UserDoesNotExistExceptionHandler(HttpServletRequest request,Exception exception) {
         logger.info(UserDoesNotExistException.class.getName());
         HttpStatus status = HttpStatus.UNAUTHORIZED;
