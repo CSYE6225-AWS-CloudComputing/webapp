@@ -4,6 +4,8 @@ import com.example.webapp.DAO.UserDAO;
 import com.example.webapp.DTO.UserDTO;
 import com.example.webapp.DTO.UserUpdateDTO;
 import com.example.webapp.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
@@ -34,6 +37,8 @@ class WebappApplicationIntegrationTest {
 
 	@Autowired
 	private UserDAO userDAO;
+
+	Logger logger= LogManager.getLogger(WebappApplicationIntegrationTest.class);
 
 
 	@Test
@@ -60,6 +65,7 @@ class WebappApplicationIntegrationTest {
 		assertEquals("Get User Check",HttpStatus.OK, getResponse.getStatusCode());
 		User retrievedUser = getResponse.getBody();
 		assertEquals("Get Check after Post call","Nishath@gmail.com", retrievedUser.getUserName());
+		logger.info("Test 1 completed");
 	}
 
 	@Test
@@ -80,6 +86,7 @@ class WebappApplicationIntegrationTest {
 		assertEquals("Status check after get call",HttpStatus.OK, getResponse.getStatusCode());
 		User retrievedUser = getResponse.getBody();
 		assertEquals("UserName Check after update","Nish", retrievedUser.getFirstName());
+		logger.info("Test 2 completed");
 	}
 
 }
