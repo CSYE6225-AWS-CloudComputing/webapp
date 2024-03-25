@@ -1,5 +1,6 @@
 package com.example.webapp;
 
+import com.example.webapp.DAO.UserDAO;
 import com.example.webapp.DTO.UserDTO;
 import com.example.webapp.DTO.UserUpdateDTO;
 import com.example.webapp.model.User;
@@ -31,6 +32,9 @@ class WebappApplicationIntegrationTest {
 
 	String url = "http://localhost:";
 
+	@Autowired
+	private UserDAO userDAO;
+
 
 	@Test
 	@Order(1)
@@ -44,6 +48,9 @@ class WebappApplicationIntegrationTest {
 
 		ResponseEntity<String> createResponse = restTemplate.exchange(url+ port + "/v1/user",HttpMethod.POST, entity, String.class);
 		assertEquals(String.valueOf(createResponse.getBody()),HttpStatus.OK, createResponse.getStatusCode());
+		User userOutput=userDAO.findUserByUserNameIgnoreCase(newUser.getUserName()).get();
+		userOutput.setAuthenticated(true);
+		userDAO.save(userOutput);
 //		User createdUser = createResponse.getBody();
 //		assertEquals(String.valueOf(createResponse),"Nishath@gmail.com", createdUser.getUserName());
 

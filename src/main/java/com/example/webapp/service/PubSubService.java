@@ -30,7 +30,7 @@ public class PubSubService {
     @Value("${topicName}")
     private String topicName;
 
-    @Value("${credentialsPath}")
+    @Value("${PubSubCredentialsPath}")
     private String credentialsPath;
     public void publishMessageToCloudFunction(ResponseEntity<User> userResponseEntity) throws IOException {
         CredentialsProvider credentialsProvider = () -> {
