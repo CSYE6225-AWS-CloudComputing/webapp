@@ -1,6 +1,5 @@
 package com.example.webapp.controlleradvice;
 
-import com.example.webapp.controller.UserController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -54,6 +53,16 @@ public class GlobalExceptionHandler {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("msg", "Bad JSON: Couldn't Parse");
+        responseMap.put("timestamp", LocalDateTime.now());
+        createLog(request,new ResponseEntity<>(responseMap, status));
+        return new ResponseEntity<>(responseMap, status);
+    }
+
+    @ExceptionHandler(PubSubException.class)
+    public ResponseEntity<Object> PubSubExceptionHandler(HttpServletRequest request,Exception exception) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("msg", "PubSub Credentials path invalid");
         responseMap.put("timestamp", LocalDateTime.now());
         createLog(request,new ResponseEntity<>(responseMap, status));
         return new ResponseEntity<>(responseMap, status);
