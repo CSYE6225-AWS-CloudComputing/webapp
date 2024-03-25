@@ -81,6 +81,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(responseMap, status);
     }
 
+    @ExceptionHandler({ IOException.class})
+    public ResponseEntity<Object> IOExceptionnHandler(HttpServletRequest request,Exception exception) {
+        logger.info(IOException.class.getName());
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("msg", exception.getMessage());
+        responseMap.put("timestamp", LocalDateTime.now());
+        createLog(request,new ResponseEntity<>(responseMap, status));
+        return new ResponseEntity<>(responseMap, status);
+    }
+
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity NoResourceFoundExceptionHandler(HttpServletRequest request,HttpServletResponse response) {
         response.setHeader("Cache-control", "no-cache, no-store, must-revalidate");

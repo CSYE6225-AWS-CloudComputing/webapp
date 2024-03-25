@@ -19,6 +19,8 @@ import org.springframework.http.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
+import java.util.Optional;
+
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 
@@ -53,9 +55,14 @@ class WebappApplicationIntegrationTest {
 
 		ResponseEntity<String> createResponse = restTemplate.exchange(url+ port + "/v1/user",HttpMethod.POST, entity, String.class);
 		assertEquals(String.valueOf(createResponse.getBody()),HttpStatus.OK, createResponse.getStatusCode());
-		User userOutput=userDAO.findUserByUserNameIgnoreCase(newUser.getUserName()).get();
-		userOutput.setAuthenticated(true);
-		userDAO.save(userOutput);
+		Optional<User> userOutput=userDAO.findUserByUserNameIgnoreCase(newUser.getUserName());
+		if(userOutput.isPresent()){
+			User user=userOutput.get();
+			user.setIsAuthenticated(true);
+			userDAO.save(user);
+			logger.info("User Authenticated");
+		}
+
 //		User createdUser = createResponse.getBody();
 //		assertEquals(String.valueOf(createResponse),"Nishath@gmail.com", createdUser.getUserName());
 

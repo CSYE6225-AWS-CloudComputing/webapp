@@ -51,6 +51,9 @@ public class User {
     @JsonIgnore
     boolean isAuthenticated;
 
+    public void setIsAuthenticated(boolean flag){
+        isAuthenticated=flag;
+    }
     public User(String firstName, String lastName, String userName, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
