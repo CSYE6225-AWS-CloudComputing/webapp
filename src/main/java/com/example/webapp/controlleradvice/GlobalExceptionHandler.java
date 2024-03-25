@@ -50,6 +50,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Object> HttpMessageNotReadableExceptionHandler(HttpServletRequest request,Exception exception) {
+        logger.info(HttpMessageNotReadableException.class.getName());
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("msg", "Bad JSON: Couldn't Parse");
@@ -60,6 +61,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PubSubException.class)
     public ResponseEntity<Object> PubSubExceptionHandler(HttpServletRequest request,Exception exception) {
+        logger.info(PubSubException.class.getName());
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("msg", "PubSub Credentials path invalid");
@@ -70,6 +72,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({UserDoesNotExistException.class, IOException.class})
     public ResponseEntity<Object> UserDoesNotExistExceptionHandler(HttpServletRequest request,Exception exception) {
+        logger.info(UserDoesNotExistException.class.getName());
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("msg", exception.getMessage());
