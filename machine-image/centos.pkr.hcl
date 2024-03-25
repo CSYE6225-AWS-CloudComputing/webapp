@@ -9,7 +9,7 @@ packer {
 
 variable "project_id" {
   type    = string
-  default = "csye6225-dev-414521"
+  default = "cloud-networking-project"
 }
 
 variable "ssh_username" {
