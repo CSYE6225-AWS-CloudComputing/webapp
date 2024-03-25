@@ -33,7 +33,7 @@ variable "base_image" {
 }
 
 variable zone {
-  default = "us-central1-a"
+  default = "us-east1-b"
 }
 
 source "googlecompute" "custom_image" {
