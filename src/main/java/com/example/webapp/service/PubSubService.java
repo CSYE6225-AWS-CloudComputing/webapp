@@ -31,8 +31,6 @@ public class PubSubService {
     @Value("${topicName}")
     private String topicName;
 
-    @Value("${PubSubCredentialsPath}")
-    private String credentialsPath;
     public void publishMessageToCloudFunction(ResponseEntity<User> userResponseEntity) throws IOException {
 
         // Create a Pub/Sub publisher
