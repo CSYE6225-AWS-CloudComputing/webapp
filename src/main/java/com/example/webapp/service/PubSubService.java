@@ -15,11 +15,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 
-@Component
+@Service
 public class PubSubService {
 
     private final Logger logger = LogManager.getLogger(PubSubService.class);
