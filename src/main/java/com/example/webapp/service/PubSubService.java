@@ -33,21 +33,9 @@ public class PubSubService {
     @Value("${PubSubCredentialsPath}")
     private String credentialsPath;
     public void publishMessageToCloudFunction(ResponseEntity<User> userResponseEntity) throws IOException {
-        CredentialsProvider credentialsProvider = () -> {
-            try {
-                return GoogleCredentials.fromStream(new FileInputStream(credentialsPath));
-            } catch (IOException e) {
-                try {
-                    throw new PubSubException("Failed to load credentials for Publishing message", e);
-                } catch (PubSubException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        };
 
         // Create a Pub/Sub publisher
         Publisher publisher = Publisher.newBuilder(TopicName.of(projectId, topicName))
-                .setCredentialsProvider(credentialsProvider)
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
