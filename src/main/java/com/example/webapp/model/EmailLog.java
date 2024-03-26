@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailLogs {
+public class EmailLog {
 
     @Id
     @Column(nullable = false)

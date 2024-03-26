@@ -1,13 +1,18 @@
 package com.example.webapp.service;
 
+import com.example.webapp.DAO.EmailLogDAO;
 import com.example.webapp.DAO.UserDAO;
 import com.example.webapp.DTO.UserDTO;
 import com.example.webapp.DTO.UserUpdateDTO;
+import com.example.webapp.controller.UserController;
 import com.example.webapp.controlleradvice.InvalidCreateRequest;
 import com.example.webapp.controlleradvice.InvalidUserUpdaRequestException;
 import com.example.webapp.controlleradvice.UserDoesNotExistException;
 import com.example.webapp.controlleradvice.UserExistsException;
+import com.example.webapp.model.EmailLog;
 import com.example.webapp.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,10 +35,15 @@ public class UserService {
     UserDAO userDAO;
 
     @Autowired
+    EmailLogDAO emailLogDAO;
+
+    @Autowired
     ModelMapper modelMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    private final Logger logger = LogManager.getLogger(UserService.class);
 
     public User createUser(UserDTO userDTO) throws UserExistsException, InvalidCreateRequest {
         if (ObjectUtils.isEmpty(userDTO.getUserName())) {
@@ -84,6 +94,8 @@ public class UserService {
                 userDAO.save(updateUser);
                 return true;
             }
+            Optional<EmailLog> emailLogOptional=emailLogDAO.findEmailLogByUserEmailIgnoreCase(email);
+            emailLogOptional.ifPresent(emailLog -> logger.info("Email Log entry: " + emailLog.toString()));
             return false;
         } catch (Exception e) {
             e.printStackTrace();
