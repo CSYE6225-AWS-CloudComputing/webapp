@@ -20,4 +20,12 @@ public class EmailLog {
     @Column(nullable = false)
     String userEmail;
 
+    public String toString() {
+        return "EmailLog :{" +
+                "id='" + id + '\n' +
+                "User Email=" + userEmail +'\n'+
+                "Email Delivery flag:"+userEmail+
+                '}';
+    }
+
 }
