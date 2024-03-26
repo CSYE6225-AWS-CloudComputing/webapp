@@ -58,7 +58,7 @@ class WebappApplicationIntegrationTest {
 		Optional<User> userOutput=userDAO.findUserByUserNameIgnoreCase(newUser.getUserName());
 		if(userOutput.isPresent()){
 			User user=userOutput.get();
-			user.setIsAuthenticated(true);
+			user.setAuthenticated(true);
 			userDAO.save(user);
 			logger.info("User Authenticated");
 		}
