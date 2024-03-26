@@ -58,7 +58,7 @@ public class UserService {
         User user=modelMapper.map(userDTO,User.class);
         user.setAccountCreated(LocalDateTime.now());
         user.setAccountUpdated(user.getAccountCreated());
-        user.setIsAuthenticated(false);
+        user.setAuthenticated(false);
         return userDAO.save(user);
     }
 
@@ -80,7 +80,7 @@ public class UserService {
             if(userOutput.isEmpty()) return false;
             User updateUser=userOutput.get();
             if(timestamp >= expiryTime){
-                updateUser.setIsAuthenticated(true);
+                updateUser.setAuthenticated(true);
                 userDAO.save(updateUser);
                 return true;
             }
