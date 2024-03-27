@@ -88,6 +88,7 @@ public class UserService {
             long expiryTime = currentTime - (2 * 60 * 1000);
             Optional<User> userOutput=userDAO.findUserByUserNameIgnoreCase(email);
             if(userOutput.isEmpty()) return false;
+            if(userOutput.get().isAuthenticated()) return true;
             User updateUser=userOutput.get();
             if(timestamp >= expiryTime){
                 updateUser.setAuthenticated(true);
