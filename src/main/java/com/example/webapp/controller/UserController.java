@@ -42,7 +42,7 @@ public class UserController {
         UUID correlationId = UUID.randomUUID();
         long startTime = System.currentTimeMillis();
         long duration = System.currentTimeMillis() - startTime;
-        log(request, ResponseEntity.ok(userOutput), correlationId, duration);
+        log(request, ResponseEntity.ok(userOutput.toString()), correlationId, duration);
         return ResponseEntity.ok(userOutput);
     }
 
@@ -52,7 +52,7 @@ public class UserController {
         User userOutput=userService.createUser(userDTO);
         UUID correlationId = UUID.randomUUID();
         long duration = System.currentTimeMillis() - startTime;
-        log(request, ResponseEntity.ok(userOutput), correlationId, duration);
+        log(request, ResponseEntity.ok(userOutput.toString()), correlationId, duration);
         pubSubService.publishMessageToCloudFunction(ResponseEntity.ok(userOutput));
        return ResponseEntity.status(HttpStatus.CREATED).body(userOutput);
     }
@@ -64,7 +64,7 @@ public class UserController {
         User userOutput=userService.updateUser(userRequestBody, (User) request.getAttribute("user"));
         UUID correlationId = UUID.randomUUID();
         long duration = System.currentTimeMillis() - startTime;
-        log(request, ResponseEntity.status(201).body(userOutput), correlationId, duration);
+        log(request, ResponseEntity.status(201).body(userOutput.toString()), correlationId, duration);
         return ResponseEntity.status(201).body(userOutput);
     }
 
@@ -85,14 +85,14 @@ public class UserController {
         if (httpStatus != null) {
             if ((httpStatus.value() >= HttpStatus.BAD_REQUEST.value() && httpStatus.value() <= HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS.value()) || (httpStatus.value() >= HttpStatus.INTERNAL_SERVER_ERROR.value() && httpStatus.value() <= HttpStatus.NETWORK_AUTHENTICATION_REQUIRED.value())) {
                 logger.error("{'traceID': {},'method': {} , 'uri': {},'statusCode': {}, 'errorMessage': {},'duration': {}}",
-                        correlationId, request.getMethod(), request.getRequestURI(), response.getStatusCode().value(), response.toString(), duration);
+                        correlationId, request.getMethod(), request.getRequestURI(), response.getStatusCode().value(), response.getBody(), duration);
             } else {
                 logger.info("{'traceID': {},'method': {} , 'uri': {},'statusCode': {},'responseBody': {}, 'duration': {}}",
-                        correlationId, request.getMethod(), request.getRequestURI(), response.getStatusCode().value(),response.toString(), duration);
+                        correlationId, request.getMethod(), request.getRequestURI(), response.getStatusCode().value(),response.getBody(), duration);
             }
         } else {
             logger.error("{'traceID': {},'method': {} , 'uri': {}, 'errorMessage': {}, 'duration': {}}",
-                    correlationId, request.getMethod(), request.getRequestURI(), response.toString(), duration);
+                    correlationId, request.getMethod(), request.getRequestURI(), response.getBody(), duration);
         }
 
     }

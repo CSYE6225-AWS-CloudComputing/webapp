@@ -44,6 +44,19 @@ public class User {
     @Column(updatable = false)
     private LocalDateTime accountCreated;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", accountCreated=" + accountCreated +
+                ", accountUpdated=" + accountUpdated +
+                ", isAuthenticated=" + isAuthenticated +
+                '}';
+    }
+
     @JsonProperty("account_updated")
     @Column(nullable = false)
     private LocalDateTime accountUpdated;
