@@ -74,8 +74,8 @@ public class UserController {
         boolean isVerified=userService.verifyToken(verificationToken);
         long duration = System.currentTimeMillis() - startTime;
         UUID correlationId = UUID.randomUUID();
-        if(isVerified) return ResponseEntity.ok().build();
         log(request, ResponseEntity.status(200).build(), correlationId, duration);
+        if(isVerified) return ResponseEntity.ok().build();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
     }

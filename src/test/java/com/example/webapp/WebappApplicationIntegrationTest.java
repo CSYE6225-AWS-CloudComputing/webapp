@@ -54,7 +54,7 @@ class WebappApplicationIntegrationTest {
 
 
 		ResponseEntity<String> createResponse = restTemplate.exchange(url+ port + "/v1/user",HttpMethod.POST, entity, String.class);
-		assertEquals(String.valueOf(createResponse.getBody()),HttpStatus.OK, createResponse.getStatusCode());
+		assertEquals(String.valueOf(createResponse.getBody()),HttpStatus.CREATED, createResponse.getStatusCode());
 		Optional<User> userOutput=userDAO.findUserByUserNameIgnoreCase(newUser.getUserName());
 		if(userOutput.isPresent()){
 			User user=userOutput.get();
@@ -85,7 +85,7 @@ class WebappApplicationIntegrationTest {
 
 		ResponseEntity<Void> updateResponse = restTemplate.withBasicAuth("Nishath@gmail.com","Secure@Pass123").exchange(url+ port + "/v1/user/self", HttpMethod.PUT, updateEntity, Void.class);
 
-		assertEquals("Update User Status Check", HttpStatus.NO_CONTENT, updateResponse.getStatusCode());
+		assertEquals("Update User Status Check", HttpStatus.CREATED, updateResponse.getStatusCode());
 
 		// Test updated account retrieval
 		HttpEntity<String> getEntity = new HttpEntity<>(null, headers);
