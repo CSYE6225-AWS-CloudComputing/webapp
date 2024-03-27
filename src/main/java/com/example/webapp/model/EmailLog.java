@@ -3,6 +3,8 @@ package com.example.webapp.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -20,11 +22,24 @@ public class EmailLog {
     @Column(nullable = false)
     String userEmail;
 
+    @Column(updatable = false)
+    private LocalDateTime timeStamp;
+
+    @Column(nullable = false)
+    private String verificationLink;
+
+    @Column(nullable = false)
+    private LocalDateTime expirationTime;
+
+    @Override
     public String toString() {
-        return "EmailLog :{" +
-                "id='" + id + '\n' +
-                "User Email=" + userEmail +'\n'+
-                "Email Delivery flag:"+userEmail+
+        return "EmailLog{" +
+                "id='" + id + '\'' +
+                ", isEmailSent=" + isEmailSent +
+                ", userEmail='" + userEmail + '\'' +
+                ", timeStamp=" + timeStamp +
+                ", verificationLink='" + verificationLink + '\'' +
+                ", expirationTime=" + expirationTime +
                 '}';
     }
 

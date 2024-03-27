@@ -54,18 +54,18 @@ public class UserController {
         long duration = System.currentTimeMillis() - startTime;
         log(request, ResponseEntity.ok(userOutput), correlationId, duration);
         pubSubService.publishMessageToCloudFunction(ResponseEntity.ok(userOutput));
-       return ResponseEntity.ok(userOutput);
+       return ResponseEntity.status(HttpStatus.CREATED).body(userOutput);
     }
 
     @PutMapping("/self")
-    public ResponseEntity<User> updateUser(@Valid @RequestBody UserUpdateDTO userRequestBody, HttpServletRequest request) throws UserDoesNotExistException, InvalidUserUpdaRequestException {
+    public ResponseEntity<User> updateUser(@Valid @RequestBody UserUpdateDTO userRequestBody, HttpServletRequest request) throws InvalidUserUpdaRequestException {
 
         long startTime = System.currentTimeMillis();
         User userOutput=userService.updateUser(userRequestBody, (User) request.getAttribute("user"));
         UUID correlationId = UUID.randomUUID();
         long duration = System.currentTimeMillis() - startTime;
-        log(request, ResponseEntity.status(204).body(userOutput), correlationId, duration);
-        return ResponseEntity.status(204).body(userOutput);
+        log(request, ResponseEntity.status(201).body(userOutput), correlationId, duration);
+        return ResponseEntity.status(201).body(userOutput);
     }
 
     @GetMapping("/authenticate")
@@ -87,8 +87,8 @@ public class UserController {
                 logger.error("{'traceID': {},'method': {} , 'uri': {},'statusCode': {}, 'errorMessage': {},'duration': {}}",
                         correlationId, request.getMethod(), request.getRequestURI(), response.getStatusCode().value(), response.toString(), duration);
             } else {
-                logger.info("{'traceID': {},'method': {} , 'uri': {},'statusCode': {}, 'duration': {}}",
-                        correlationId, request.getMethod(), request.getRequestURI(), response.getStatusCode().value(), duration);
+                logger.info("{'traceID': {},'method': {} , 'uri': {},'statusCode': {},'responseBody': {}, 'duration': {}}",
+                        correlationId, request.getMethod(), request.getRequestURI(), response.getStatusCode().value(),response.toString(), duration);
             }
         } else {
             logger.error("{'traceID': {},'method': {} , 'uri': {}, 'errorMessage': {}, 'duration': {}}",
