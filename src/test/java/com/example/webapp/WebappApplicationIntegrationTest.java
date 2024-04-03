@@ -85,7 +85,7 @@ class WebappApplicationIntegrationTest {
 
 		ResponseEntity<Void> updateResponse = restTemplate.withBasicAuth("Nishath@gmail.com","Secure@Pass123").exchange(url+ port + "/v1/user/self", HttpMethod.PUT, updateEntity, Void.class);
 
-		assertEquals("Update User Status Check", HttpStatus.CREATED, updateResponse.getStatusCode());
+		assertEquals("Update User Status Check", HttpStatus.NO_CONTENT, updateResponse.getStatusCode());
 
 		// Test updated account retrieval
 		HttpEntity<String> getEntity = new HttpEntity<>(null, headers);
