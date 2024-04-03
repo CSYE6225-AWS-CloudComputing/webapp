@@ -70,7 +70,7 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
 
                         User user = userService.getUser(username);
                         if(!user.isAuthenticated()){
-                            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                            response.setStatus(HttpStatus.FORBIDDEN.value());
                             response.setContentType("application/json");
                             response.getWriter().write("{\"message\": \"" +"User not verified"+ "\"}");
                             UUID correlationId = UUID.randomUUID();
