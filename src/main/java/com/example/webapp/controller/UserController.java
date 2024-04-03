@@ -64,8 +64,8 @@ public class UserController {
         User userOutput=userService.updateUser(userRequestBody, (User) request.getAttribute("user"));
         UUID correlationId = UUID.randomUUID();
         long duration = System.currentTimeMillis() - startTime;
-        log(request, ResponseEntity.status(201).body(userOutput.toString()), correlationId, duration);
-        return ResponseEntity.status(201).body(userOutput);
+        log(request, ResponseEntity.status(204).body(userOutput.toString()), correlationId, duration);
+        return ResponseEntity.status(204).build();
     }
 
     @GetMapping("/authenticate")
