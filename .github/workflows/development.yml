@@ -80,10 +80,6 @@ jobs:
 
       - name: Retrieve Instance template details
         run: |
-          gcloud --version
-          gcloud init
-          sudo apt install jq
-          sudo apt install -y libc-bin
           instanceData=$(gcloud compute instance-templates describe centos-image-instance-template --region="us-east1" --format="json") 
 
       - name: Extract required properties
@@ -101,7 +97,7 @@ jobs:
           echo "$startupScript" | iconv -t UTF-8 > startup_script_utf8.sh
           pwd
           ls
-          cat .\startup_script_utf8.sh
+          cat ./startup_script_utf8.sh
 
       - name: Generate Unique ID
         id: gen-unique-id
@@ -111,7 +107,7 @@ jobs:
       - name: Create new Instance template
         run: |
           $instanceTemplateName = "cd-instance-template-${{ steps.gen-unique-id.outputs.unique_id }}"
-          gcloud compute instance-templates create $instanceTemplateName --machine-type=$machineType --tags=$tags --image=$image_path --metadata-from-file=startup-script=.\startup_script_utf8.sh --network=$network --subnet=$subnetwork --network-tier=$networkTier --service-account=$serviceAccountEmail --scopes=$serviceAccountScopes --instance-template-region=us-east1 --boot-disk-type=$diskType --boot-disk-size=$diskSizeGb
+          gcloud compute instance-templates create $instanceTemplateName --machine-type=$machineType --tags=$tags --image=$image_path --metadata-from-file=startup-script=./startup_script_utf8.sh --network=$network --subnet=$subnetwork --network-tier=$networkTier --service-account=$serviceAccountEmail --scopes=$serviceAccountScopes --instance-template-region=us-east1 --boot-disk-type=$diskType --boot-disk-size=$diskSizeGb
 
       - name: Start rolling update for instance group
 
