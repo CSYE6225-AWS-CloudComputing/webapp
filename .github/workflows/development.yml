@@ -99,6 +99,7 @@ jobs:
           machineType=$(echo "$instanceData" | jq -r '.properties.machineType')
           networkTier=$(echo "$instanceData" | jq -r '.properties.networkInterfaces[0].accessConfigs[0].networkTier')
           tags=$(echo "$instanceData" | jq -r '.properties.tags.items[]')
+          echo "$startupScript" | iconv -t UTF-8 > startup_script_utf8.sh
           uuid=$(uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '-')
           echo "::set-output name=unique_id::$uuid"
           instanceTemplateName="cd-instance-template-$uuid"
