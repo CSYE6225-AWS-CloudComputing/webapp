@@ -77,16 +77,10 @@ jobs:
         run: |
           image_path="projects/csye6225-dev-414521/global/images/centos-1712171612"
           echo "Full path: $image_path" 
-
-      - name: Retrieve Instance template details
-        run: |
           echo *************************************************************************
           instanceData=$(gcloud compute instance-templates describe centos-image-instance-template --region="us-east1" --format="json")
           echo ***************************************************************************
           echo $instanceData
-
-      - name: Extract required properties
-        run: |
           gcloud init
           sudo apt install jq
           sudo apt install -y libc-bin
@@ -114,17 +108,10 @@ jobs:
           pwd
           ls
           cat ./startup_script_utf8.sh
-
-      - name: Generate Unique ID
-        id: gen-unique-id
-        run: |
           uuid=$(uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '-')
           echo "::set-output name=unique_id::$uuid"
-
-      - name: Create new Instance template
-        run: |
           instanceTemplateName="cd-instance-template-$uuid"
-          gcloud compute instance-templates create $instanceTemplateName --machine-type=$machineType --tags=webapp --image=$image_path --metadata-from-file=startup-script=./startup_script_utf8.sh --network=$network --subnet=$subnetwork --network-tier=$networkTier --service-account=$serviceAccountEmail --scopes=$serviceAccountScopes --instance-template-region=us-east1 --boot-disk-type=$diskType --boot-disk-size=100
+          gcloud compute instance-templates create $instanceTemplateName --machine-type=$machineType --tags=$tags --image=$image_path --metadata-from-file=startup-script=./startup_script_utf8.sh --network=$network --subnet=$subnetwork --network-tier=$networkTier --service-account=$serviceAccountEmail --scopes=$serviceAccountScopes --instance-template-region=us-east1 --boot-disk-type=$diskType --boot-disk-size=$diskSizeGb
 
       - name: Start rolling update for instance group
 
