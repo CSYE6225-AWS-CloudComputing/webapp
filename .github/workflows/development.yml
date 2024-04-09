@@ -98,6 +98,16 @@ jobs:
           networkTier=$(echo "$instanceData" | jq -r '.properties.networkInterfaces[0].accessConfigs[0].networkTier')
           tags=$(echo "$instanceData" | jq -r '.properties.tags.items[]')
           echo "$startupScript" | iconv -t UTF-8 > startup_script_utf8.sh
+          echo "diskSizeGb: $diskSizeGb"
+          echo "diskType: $diskType"
+          echo "startupScript: $startupScript"
+          echo "serviceAccountEmail: $serviceAccountEmail"
+          echo "serviceAccountScopes: $serviceAccountScopes"
+          echo "network: $network"
+          echo "subnetwork: $subnetwork"
+          echo "machineType: $machineType"
+          echo "networkTier: $networkTier"
+          echo "tags: $tags"
           pwd
           ls
           cat ./startup_script_utf8.sh
