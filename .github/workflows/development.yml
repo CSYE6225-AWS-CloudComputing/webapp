@@ -81,7 +81,7 @@ jobs:
       - name: Retrieve Instance template details
         run: |
           instanceData=$(gcloud compute instance-templates describe centos-image-instance-template --region="us-east1" --format="json")
-          echo***************************************************************************
+          echo ***************************************************************************
           echo $instanceData
 
       - name: Extract required properties
