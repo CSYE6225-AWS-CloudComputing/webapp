@@ -40,9 +40,6 @@ jobs:
         with:
           version: '>= 363.0.0'
 
-      - name: Install Gcloud CLI
-        run: sudo apt-get update && sudo apt-get install google-cloud-cli
-
       - name: Set up JDK 19
         uses: actions/setup-java@v4
         with:
@@ -92,20 +89,24 @@ jobs:
 
       - name: Retrieve Instance template details
         run: |
-          $instanceData =gcloud compute instance-templates describe centos-image-instance-template --region="us-east1" --format="json" | ConvertFrom-Json
+          gcloud --version
+          gcloud init
+          sudo apt install jq
+          sudo apt install -y libc-bin
+          instanceData=$(gcloud compute instance-templates describe centos-image-instance-template --region="us-east1" --format="json") 
 
       - name: Extract required properties
         run: |
-          $diskSizeGb = $instanceData.properties.disks[0].initializeParams.diskSizeGb
-          $diskType=$instanceData.properties.disks[0].initializeParams.diskType
-          $startupScript = $instanceData.properties.metadata.items.value
-          $serviceAccountEmail = $instanceData.properties.serviceAccounts[0].email
-          $serviceAccountScopes = $instanceData.properties.serviceAccounts[0].scopes
-          $network = $instanceData.properties.networkInterfaces[0].network
-          $subnetwork = $instanceData.properties.networkInterfaces[0].subnetwork
-          $machineType = $instanceData.properties.machineType
-          $networkTier = $instanceData.properties.networkInterfaces[0].accessConfigs[0].networkTier
-          $tags = $instanceData.properties.tags.items
+          diskSizeGb=$(echo "$instanceData" | jq -r '.properties.disks[0].initializeParams.diskSizeGb')
+          diskType=$(echo "$instanceData" | jq -r '.properties.disks[0].initializeParams.diskType')
+          startupScript=$(echo "$instanceData" | jq -r '.properties.metadata.items[].value')
+          serviceAccountEmail=$(echo "$instanceData" | jq -r '.properties.serviceAccounts[0].email')
+          serviceAccountScopes=$(echo "$instanceData" | jq -r '.properties.serviceAccounts[0].scopes')
+          network=$(echo "$instanceData" | jq -r '.properties.networkInterfaces[0].network')
+          subnetwork=$(echo "$instanceData" | jq -r '.properties.networkInterfaces[0].subnetwork')
+          machineType=$(echo "$instanceData" | jq -r '.properties.machineType')
+          networkTier=$(echo "$instanceData" | jq -r '.properties.networkInterfaces[0].accessConfigs[0].networkTier')
+          tags=$(echo "$instanceData" | jq -r '.properties.tags.items[]')
           echo "$startupScript" | iconv -t UTF-8 > startup_script_utf8.sh
           pwd
           ls
