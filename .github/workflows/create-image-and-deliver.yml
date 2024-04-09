@@ -75,4 +75,36 @@ jobs:
         run: packer validate ./machine-image/centos.pkr.hcl
 
       - name: Run packer script
-        run: packer build ./machine-image/centos.pkr.hcl
+        run: |
+          output=$(packer build ./machine-image/centos.pkr.hcl)
+          echo "$output" > packer_output.txt
+          echo "::set-output name=output::$output" # Set the output to be used later
+
+      - name: Update Instance group
+        run: |
+          last_line=$(tail -n 1 packer_output.txt)
+          image_name=$(echo "$last_line" | grep -oE 'centos-[0-9]+' | tail -1)
+          echo "::set-output name=image_name::$image_name" # Set the image name to be used later
+          image_path="projects/csye6225-dev-414521/global/images/$image_name"
+          echo "Full path: $image_path" 
+          instanceData=$(gcloud compute instance-templates describe centos-image-instance-template --region="us-east1" --format="json")
+          gcloud init
+          sudo apt install jq
+          sudo apt install -y libc-bin
+          diskSizeGb=$(echo "$instanceData" | jq -r '.properties.disks[0].initializeParams.diskSizeGb')
+          diskType=$(echo "$instanceData" | jq -r '.properties.disks[0].initializeParams.diskType')
+          startupScript=$(echo "$instanceData" | jq -r '.properties.metadata.items[].value')
+          serviceAccountEmail=$(echo "$instanceData" | jq -r '.properties.serviceAccounts[0].email')
+          serviceAccountScopes=$(echo "$instanceData" | jq -r '.properties.serviceAccounts[0].scopes[0]')
+          network=$(echo "$instanceData" | jq -r '.properties.networkInterfaces[0].network')
+          subnetwork=$(echo "$instanceData" | jq -r '.properties.networkInterfaces[0].subnetwork')
+          machineType=$(echo "$instanceData" | jq -r '.properties.machineType')
+          networkTier=$(echo "$instanceData" | jq -r '.properties.networkInterfaces[0].accessConfigs[0].networkTier')
+          tags=$(echo "$instanceData" | jq -r '.properties.tags.items[]')
+          echo "$startupScript" | iconv -t UTF-8 > startup_script_utf8.sh
+          uuid=$(uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '-')
+          echo "::set-output name=unique_id::$uuid"
+          instanceTemplateName="cd-instance-template-$uuid"
+          gcloud compute instance-templates create $instanceTemplateName --machine-type=$machineType --tags=$tags --image=$image_path --metadata-from-file=startup-script=./startup_script_utf8.sh --network=$network --subnet=$subnetwork --network-tier=$networkTier --service-account=$serviceAccountEmail --scopes=$serviceAccountScopes --instance-template-region=us-east1 --boot-disk-type=$diskType --boot-disk-size=$diskSizeGb
+          gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager --version=template=https://compute.googleapis.com/compute/v1/projects/csye6225-dev-414521/regions/us-east1/instanceTemplates/$instanceTemplateName --region=us-east1
+          gcloud compute instance-groups managed wait-until webapp-instance-group-manager --version-target-reached --region=us-east1
