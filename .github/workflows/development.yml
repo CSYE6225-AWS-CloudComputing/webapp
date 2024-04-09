@@ -41,9 +41,7 @@ jobs:
           version: '>= 363.0.0'
 
       - name: Install Gcloud CLI
-        run: | 
-          sudo yum install google-cloud-cli
-          gcloud init
+        run: ./google-cloud-sdk/bin/gcloud init
 
       - name: Set up JDK 19
         uses: actions/setup-java@v4
