@@ -84,6 +84,9 @@ jobs:
 
       - name: Extract required properties
         run: |
+          gcloud init
+          sudo apt install jq
+          sudo apt install -y libc-bin
           diskSizeGb=$(echo "$instanceData" | jq -r '.properties.disks[0].initializeParams.diskSizeGb')
           diskType=$(echo "$instanceData" | jq -r '.properties.disks[0].initializeParams.diskType')
           startupScript=$(echo "$instanceData" | jq -r '.properties.metadata.items[].value')
@@ -102,11 +105,12 @@ jobs:
       - name: Generate Unique ID
         id: gen-unique-id
         run: |
-          echo "::set-output name=unique_id::$(uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '-')"
+          uuid=$(uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '-')
+          echo "::set-output name=unique_id::$uuid"
 
       - name: Create new Instance template
         run: |
-          $instanceTemplateName = "cd-instance-template-${{ steps.gen-unique-id.outputs.unique_id }}"
+          instanceTemplateName="cd-instance-template-$uuid"
           gcloud compute instance-templates create $instanceTemplateName --machine-type=$machineType --tags=$tags --image=$image_path --metadata-from-file=startup-script=./startup_script_utf8.sh --network=$network --subnet=$subnetwork --network-tier=$networkTier --service-account=$serviceAccountEmail --scopes=$serviceAccountScopes --instance-template-region=us-east1 --boot-disk-type=$diskType --boot-disk-size=$diskSizeGb
 
       - name: Start rolling update for instance group
