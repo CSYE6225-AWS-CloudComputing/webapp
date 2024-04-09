@@ -40,6 +40,11 @@ jobs:
         with:
           version: '>= 363.0.0'
 
+      - name: Install Gcloud CLI
+        run: | 
+          sudo yum install google-cloud-cli
+          gcloud init
+
       - name: Set up JDK 19
         uses: actions/setup-java@v4
         with:
@@ -85,7 +90,7 @@ jobs:
           image_name=$(echo "$last_line" | grep -oE 'centos-[0-9]+' | tail -1)
           echo "::set-output name=image_name::$image_name" # Set the image name to be used later
           image_path="projects/csye6225-dev-414521/global/images/$image_name"
-          echo "Full path: image_path" 
+          echo "Full path: $image_path" 
 
       - name: Retrieve Instance template details
         run: |
