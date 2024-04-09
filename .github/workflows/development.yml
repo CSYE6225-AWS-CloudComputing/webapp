@@ -111,7 +111,7 @@ jobs:
       - name: Create new Instance template
         run: |
           instanceTemplateName="cd-instance-template-$uuid"
-          gcloud compute instance-templates create $instanceTemplateName --machine-type=$machineType --tags=webapp --image=$image_path --metadata-from-file=startup-script=./startup_script_utf8.sh --network=$network --subnet=$subnetwork --network-tier=$networkTier --service-account=$serviceAccountEmail --scopes=$serviceAccountScopes --instance-template-region=us-east1 --boot-disk-type=$diskType --boot-disk-size=$diskSizeGb
+          gcloud compute instance-templates create $instanceTemplateName --machine-type=$machineType --tags=webapp --image=$image_path --metadata-from-file=startup-script=./startup_script_utf8.sh --network=$network --subnet=$subnetwork --network-tier=$networkTier --service-account=$serviceAccountEmail --scopes=$serviceAccountScopes --instance-template-region=us-east1 --boot-disk-type=$diskType --boot-disk-size=100
 
       - name: Start rolling update for instance group
 
