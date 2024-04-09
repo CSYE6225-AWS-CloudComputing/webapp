@@ -72,19 +72,10 @@ jobs:
         id: validate
         run: packer validate ./machine-image/centos.pkr.hcl
 
-      - name: Run packer script
-        run: |
-          output=$(packer build ./machine-image/centos.pkr.hcl)
-          echo "$output" > packer_output.txt
-          echo "::set-output name=output::$output" # Set the output to be used later
-
       - name: Extract image name
         id: extract_image_name
         run: |
-          last_line=$(tail -n 1 packer_output.txt)
-          image_name=$(echo "$last_line" | grep -oE 'centos-[0-9]+' | tail -1)
-          echo "::set-output name=image_name::$image_name" # Set the image name to be used later
-          image_path="projects/csye6225-dev-414521/global/images/$image_name"
+          image_path="projects/csye6225-dev-414521/global/images/centos-1712171612"
           echo "Full path: $image_path" 
 
       - name: Retrieve Instance template details
