@@ -72,15 +72,20 @@ jobs:
         id: validate
         run: packer validate ./machine-image/centos.pkr.hcl
 
-      - name: Extract image name
-        id: extract_image_name
+      - name: Run packer script
         run: |
-          image_path="projects/csye6225-dev-414521/global/images/centos-1712171612"
+          output=$(packer build ./machine-image/centos.pkr.hcl)
+          echo "$output" > packer_output.txt
+          echo "::set-output name=output::$output" # Set the output to be used later
+
+      - name: Update Instance group
+        run: |
+          last_line=$(tail -n 1 packer_output.txt)
+          image_name=$(echo "$last_line" | grep -oE 'centos-[0-9]+' | tail -1)
+          echo "::set-output name=image_name::$image_name" # Set the image name to be used later
+          image_path="projects/csye6225-dev-414521/global/images/$image_name"
           echo "Full path: $image_path" 
-          echo *************************************************************************
           instanceData=$(gcloud compute instance-templates describe centos-image-instance-template --region="us-east1" --format="json")
-          echo ***************************************************************************
-          echo $instanceData
           gcloud init
           sudo apt install jq
           sudo apt install -y libc-bin
@@ -94,20 +99,6 @@ jobs:
           machineType=$(echo "$instanceData" | jq -r '.properties.machineType')
           networkTier=$(echo "$instanceData" | jq -r '.properties.networkInterfaces[0].accessConfigs[0].networkTier')
           tags=$(echo "$instanceData" | jq -r '.properties.tags.items[]')
-          echo "$startupScript" | iconv -t UTF-8 > startup_script_utf8.sh
-          echo "diskSizeGb: $diskSizeGb"
-          echo "diskType: $diskType"
-          echo "startupScript: $startupScript"
-          echo "serviceAccountEmail: $serviceAccountEmail"
-          echo "serviceAccountScopes: $serviceAccountScopes"
-          echo "network: $network"
-          echo "subnetwork: $subnetwork"
-          echo "machineType: $machineType"
-          echo "networkTier: $networkTier"
-          echo "tags: $tags"
-          pwd
-          ls
-          cat ./startup_script_utf8.sh
           uuid=$(uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '-')
           echo "::set-output name=unique_id::$uuid"
           instanceTemplateName="cd-instance-template-$uuid"
