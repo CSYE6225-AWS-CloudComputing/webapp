@@ -80,7 +80,7 @@ jobs:
           echo "$output" > packer_output.txt
           echo "::set-output name=output::$output" # Set the output to be used later
 
-      - name: Update Instance group
+      - name: Update Instance group through rolling update
         run: |
           last_line=$(tail -n 1 packer_output.txt)
           image_name=$(echo "$last_line" | grep -oE 'centos-[0-9]+' | tail -1)
@@ -101,10 +101,11 @@ jobs:
           machineType=$(echo "$instanceData" | jq -r '.properties.machineType')
           networkTier=$(echo "$instanceData" | jq -r '.properties.networkInterfaces[0].accessConfigs[0].networkTier')
           tags=$(echo "$instanceData" | jq -r '.properties.tags.items[]')
+          kmsKeyName=$(echo "$instanceData" | jq -r '.properties.disks[0].diskEncryptionKey.kmsKeyName')
           echo "$startupScript" | iconv -t UTF-8 > startup_script_utf8.sh
           uuid=$(uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '-')
           echo "::set-output name=unique_id::$uuid"
           instanceTemplateName="cd-instance-template-$uuid"
-          gcloud compute instance-templates create $instanceTemplateName --machine-type=$machineType --tags=$tags --image=$image_path --metadata-from-file=startup-script=./startup_script_utf8.sh --network=$network --subnet=$subnetwork --network-tier=$networkTier --service-account=$serviceAccountEmail --scopes=$serviceAccountScopes --instance-template-region=us-east1 --boot-disk-type=$diskType --boot-disk-size=$diskSizeGb
+          gcloud compute instance-templates create $instanceTemplateName --machine-type=$machineType --tags=$tags --image=$image_path --metadata-from-file=startup-script=./startup_script_utf8.sh --network=$network --subnet=$subnetwork --network-tier=$networkTier --service-account=$serviceAccountEmail --scopes=$serviceAccountScopes --instance-template-region=us-east1 --boot-disk-type=$diskType --boot-disk-size=$diskSizeGb --boot-disk-kms-key=$kmsKeyName
           gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager --version=template=https://compute.googleapis.com/compute/v1/projects/csye6225-dev-414521/regions/us-east1/instanceTemplates/$instanceTemplateName --region=us-east1
           gcloud compute instance-groups managed wait-until webapp-instance-group-manager --version-target-reached --region=us-east1
