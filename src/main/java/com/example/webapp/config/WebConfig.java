@@ -24,8 +24,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(payloadCheckInterceptor).addPathPatterns("/healthz");
 
-        registry.addInterceptor(basicAuthInterceptor).addPathPatterns("/v1/user/*");
+        registry.addInterceptor(basicAuthInterceptor).addPathPatterns("/v3/user/*");
 
-        registry.addInterceptor(postInterceptor).addPathPatterns("/v1/user");
+        registry.addInterceptor(postInterceptor).addPathPatterns("/v3/user");
     }
 }

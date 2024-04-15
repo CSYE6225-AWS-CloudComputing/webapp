@@ -47,7 +47,7 @@ public class BasicAuthInterceptor implements HandlerInterceptor {
                 UUID correlationId = UUID.randomUUID();
                 log(request,response,correlationId);
                 return false;
-            }if(request.getMethod().equalsIgnoreCase("Get") &&request.getRequestURI().equalsIgnoreCase("/v1/user/authenticate") && request.getParameterMap().size()>0){
+            }if(request.getMethod().equalsIgnoreCase("Get") &&request.getRequestURI().equalsIgnoreCase("/v3/user/authenticate") && request.getParameterMap().size()>0){
                 return true;
             }if(request.getParameterMap().size()>0){
                 response.setStatus(HttpStatus.BAD_REQUEST.value());

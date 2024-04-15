@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/v3/user")
 @Validated
 public class UserController {
 
@@ -66,6 +66,7 @@ public class UserController {
         long duration = System.currentTimeMillis() - startTime;
         log(request, ResponseEntity.status(204).body(userOutput.toString()), correlationId, duration);
         return ResponseEntity.status(204).build();
+
     }
 
     @GetMapping("/authenticate")
