@@ -66,6 +66,7 @@ public class UserController {
         long duration = System.currentTimeMillis() - startTime;
         log(request, ResponseEntity.status(204).body(userOutput.toString()), correlationId, duration);
         return ResponseEntity.status(204).build();
+
     }
 
     @GetMapping("/authenticate")
