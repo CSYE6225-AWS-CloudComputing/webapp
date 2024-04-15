@@ -53,7 +53,7 @@ class WebappApplicationIntegrationTest {
 		HttpEntity<UserDTO> entity = new HttpEntity<>(newUser, headers);
 
 
-		ResponseEntity<String> createResponse = restTemplate.exchange(url+ port + "/v1/user",HttpMethod.POST, entity, String.class);
+		ResponseEntity<String> createResponse = restTemplate.exchange(url+ port + "/v3/user",HttpMethod.POST, entity, String.class);
 		assertEquals(String.valueOf(createResponse.getBody()),HttpStatus.CREATED, createResponse.getStatusCode());
 		Optional<User> userOutput=userDAO.findUserByUserNameIgnoreCase(newUser.getUserName());
 		if(userOutput.isPresent()){
@@ -68,7 +68,7 @@ class WebappApplicationIntegrationTest {
 
 		// Test account retrieval
 		HttpEntity<String> getEntity = new HttpEntity<>(null, headers);
-		ResponseEntity<User> getResponse = restTemplate.withBasicAuth("Nishath@gmail.com","Secure@Pass123").exchange(url+ port + "/v1/user/self",HttpMethod.GET,getEntity, User.class);
+		ResponseEntity<User> getResponse = restTemplate.withBasicAuth("Nishath@gmail.com","Secure@Pass123").exchange(url+ port + "/v3/user/self",HttpMethod.GET,getEntity, User.class);
 		assertEquals("Get User Check",HttpStatus.OK, getResponse.getStatusCode());
 		User retrievedUser = getResponse.getBody();
 		assertEquals("Get Check after Post call","Nishath@gmail.com", retrievedUser.getUserName());
@@ -83,13 +83,13 @@ class WebappApplicationIntegrationTest {
 		UserUpdateDTO updateUser = new UserUpdateDTO("Nish", "sayana", "Secure@Pass123");
 		HttpEntity<UserUpdateDTO> updateEntity = new HttpEntity<>(updateUser, headers);
 
-		ResponseEntity<Void> updateResponse = restTemplate.withBasicAuth("Nishath@gmail.com","Secure@Pass123").exchange(url+ port + "/v1/user/self", HttpMethod.PUT, updateEntity, Void.class);
+		ResponseEntity<Void> updateResponse = restTemplate.withBasicAuth("Nishath@gmail.com","Secure@Pass123").exchange(url+ port + "/v3/user/self", HttpMethod.PUT, updateEntity, Void.class);
 
 		assertEquals("Update User Status Check", HttpStatus.NO_CONTENT, updateResponse.getStatusCode());
 
 		// Test updated account retrieval
 		HttpEntity<String> getEntity = new HttpEntity<>(null, headers);
-		ResponseEntity<User> getResponse = restTemplate.withBasicAuth("Nishath@gmail.com","Secure@Pass123").exchange(url+ port + "/v1/user/self",HttpMethod.GET,getEntity, User.class);
+		ResponseEntity<User> getResponse = restTemplate.withBasicAuth("Nishath@gmail.com","Secure@Pass123").exchange(url+ port + "/v3/user/self",HttpMethod.GET,getEntity, User.class);
 		assertEquals("Status check after get call",HttpStatus.OK, getResponse.getStatusCode());
 		User retrievedUser = getResponse.getBody();
 		assertEquals("UserName Check after update","Nish", retrievedUser.getFirstName());

@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/v3/user")
 @Validated
 public class UserController {
 
